@@ -1,2 +1,2 @@
 # FE800HBS
-Personal FE-800
+Personal FE-800: UPDATED
