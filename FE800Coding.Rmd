@@ -73,17 +73,7 @@ ret_360_min <- subset(stockdata, overnight_360 == 0) ## select the subset of 360
 
 ```
 ```{r}
-## Histogram of minute by minute stock returns
-hist(ret_1_min$ret_1_min, 
-     breaks = 500,
-     main = "1 Minute Intraday Returns",
-     xlab = "Minute Level Returns", 
-     col = "Light Blue")
-hist(overnight_ret_1_min$ret_1_min, 
-     breaks = 100,
-     main = "Overnight Returns",
-     xlab = "End of Trading Day to Beginning of Next Trading Day Returns", 
-     col = "Red")
+
 
 
 
@@ -99,54 +89,85 @@ mean1 <- mean(ret_1_min$ret_1_min) #mean
 sd1 <- sd(ret_1_min$ret_1_min) #standard deviation
 
 max2 <- max(ret_2_min$ret_2_min) #max return
-min1 <- min(ret_1_min$ret_2_min) #min return
-mean1 <- mean(ret_1_min$ret_2_min) #mean
-sd1 <- sd(ret_1_min$ret_2_min) #standard deviation
+min2 <- min(ret_2_min$ret_2_min) #min return
+mean2 <- mean(ret_2_min$ret_2_min) #mean
+sd2 <- sd(ret_2_min$ret_2_min) #standard deviation
 
-max1 <- max(ret_1_min$ret_1_min) #max return
-min1 <- min(ret_1_min$ret_1_min) #min return
-mean1 <- mean(ret_1_min$ret_1_min) #mean
-sd1 <- sd(ret_1_min$ret_1_min) #standard deviation
+max5 <- max(ret_5_min$ret_5_min) #max return
+min5 <- min(ret_5_min$ret_5_min) #min return
+mean5 <- mean(ret_5_min$ret_5_min) #mean
+sd5 <- sd(ret_5_min$ret_5_min) #standard deviation
 
-max1 <- max(ret_1_min$ret_1_min) #max return
-min1 <- min(ret_1_min$ret_1_min) #min return
-mean1 <- mean(ret_1_min$ret_1_min) #mean
-sd1 <- sd(ret_1_min$ret_1_min) #standard deviation
+max10 <- max(ret_10_min$ret_10_min) #max return
+min10 <- min(ret_10_min$ret_10_min) #min return
+mean10 <- mean(ret_10_min$ret_10_min) #mean
+sd10 <- sd(ret_10_min$ret_10_min) #standard deviation
 
-max1 <- max(ret_1_min$ret_1_min) #max return
-min1 <- min(ret_1_min$ret_1_min) #min return
-mean1 <- mean(ret_1_min$ret_1_min) #mean
-sd1 <- sd(ret_1_min$ret_1_min) #standard deviation
+max20 <- max(ret_20_min$ret_20_min) #max return
+min20 <- min(ret_20_min$ret_20_min) #min return
+mean20 <- mean(ret_20_min$ret_20_min) #mean
+sd20 <- sd(ret_20_min$ret_20_min) #standard deviation
 
-max1 <- max(ret_1_min$ret_1_min) #max return
-min1 <- min(ret_1_min$ret_1_min) #min return
-mean1 <- mean(ret_1_min$ret_1_min) #mean
-sd1 <- sd(ret_1_min$ret_1_min) #standard deviation
+max30 <- max(ret_30_min$ret_30_min) #max return
+min30 <- min(ret_30_min$ret_30_min) #min return
+mean30 <- mean(ret_30_min$ret_30_min) #mean
+sd30 <- sd(ret_30_min$ret_30_min) #standard deviation
 
-max1 <- max(ret_1_min$ret_1_min) #max return
-min1 <- min(ret_1_min$ret_1_min) #min return
-mean1 <- mean(ret_1_min$ret_1_min) #mean
-sd1 <- sd(ret_1_min$ret_1_min) #standard deviation
+max60 <- max(ret_60_min$ret_60_min) #max return
+min60 <- min(ret_60_min$ret_60_min) #min return
+mean60 <- mean(ret_60_min$ret_60_min) #mean
+sd60 <- sd(ret_60_min$ret_60_min) #standard deviation
 
-max1 <- max(ret_1_min$ret_1_min) #max return
-min1 <- min(ret_1_min$ret_1_min) #min return
-mean1 <- mean(ret_1_min$ret_1_min) #mean
-sd1 <- sd(ret_1_min$ret_1_min) #standard deviation
+max120 <- max(ret_120_min$ret_120_min) #max return
+min120 <- min(ret_120_min$ret_120_min) #min return
+mean120 <- mean(ret_120_min$ret_120_min) #mean
+sd120 <- sd(ret_120_min$ret_120_min) #standard deviation
 
-max1 <- max(ret_1_min$ret_1_min) #max return
-min1 <- min(ret_1_min$ret_1_min) #min return
-mean1 <- mean(ret_1_min$ret_1_min) #mean
-sd1 <- sd(ret_1_min$ret_1_min) #standard deviation
+max240 <- max(ret_240_min$ret_240_min) #max return
+min240 <- min(ret_240_min$ret_240_min) #min return
+mean240 <- mean(ret_240_min$ret_240_min) #mean
+sd240 <- sd(ret_240_min$ret_240_min) #standard deviation
 
-max1 <- max(ret_1_min$ret_1_min) #max return
-min1 <- min(ret_1_min$ret_1_min) #min return
-mean1 <- mean(ret_1_min$ret_1_min) #mean
-sd1 <- sd(ret_1_min$ret_1_min) #standard deviation
+max360 <- max(ret_360_min$ret_360_min) #max return
+min360 <- min(ret_360_min$ret_360_min) #min return
+mean360 <- mean(ret_360_min$ret_360_min) #mean
+sd360 <- sd(ret_360_min$ret_360_min) #standard deviation
 
-max1 <- max(ret_1_min$ret_1_min) #max return
-min1 <- min(ret_1_min$ret_1_min) #min return
-mean1 <- mean(ret_1_min$ret_1_min) #mean
-sd1 <- sd(ret_1_min$ret_1_min) #standard deviation
+maxon <- max(overnight_ret_1_min$ret_1_min, na.rm=TRUE) #max return
+minon <- min(overnight_ret_1_min$ret_1_min, na.rm=TRUE) #min return
+meanon <- mean(overnight_ret_1_min$ret_1_min, na.rm=TRUE) #mean
+sdon <- sd(overnight_ret_1_min$ret_1_min, na.rm=TRUE) #standard deviation
+
 
 ```
+
+```{r}
+## Create Summary Table
+
+sumtable <- matrix(c(max1, min1, mean1, sd1, max2, min2, mean2, sd2, max5, min5, mean5, sd5, max10, min10, mean10, sd10, max20, min20, mean20, sd20, max30, min30, mean30, sd30, max60, min60, mean60, sd60, max120, min120, mean120, sd120, max240, min240, mean240, sd240, max360, min360, mean360, sd30, maxon, minon, meanon, sdon), ncol = 4, byrow = TRUE)
+colnames(sumtable) <- c("Max", "Min", "Mean", "Std. Dev")
+rownames(sumtable) <- c("1 Minute", "2 Minutes", "5 Minutes", "10 Minutes", "20 Minutes", "30 Minutes", "60 Minutes", "120 Minutes", "240 Minutes", "360 Minutes", "Overnight")
+sumtable <- as.table(sumtable)
+sumtable
+```
+
+
+
+```{r}
+##  Histograms
+
+## Histogram of minute by minute stock returns
+hist(ret_1_min$ret_1_min, 
+     breaks = 500,
+     main = "1 Minute Intraday Returns",
+     xlab = "Minute Level Returns", 
+     col = "Light Blue")
+hist(overnight_ret_1_min$ret_1_min, 
+     breaks = 100,
+     main = "Overnight Returns",
+     xlab = "End of Trading Day to Beginning of Next Trading Day Returns", 
+     col = "Red")
+
+```
+
 
