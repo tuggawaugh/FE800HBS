@@ -7,15 +7,23 @@ This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute
 
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
 
-```{r}
-## plot(cars)
-```
-
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
 
 When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
 
-```{r}
+```{r LIBRARIES AND PACKAGES}
+##  INSTALL REQUIRED PACKAGES AND LIBRARIES
+install.packages("sm")
+install.packages("ggplot2")
+
+
+##  INSTALL LIBRARIES
+library(sm)
+library(ggplot2)
+```
+
+
+```{r SET WORKING DIRECTORY}
 getwd()
 setwd("C:/Users/binta.d.patel/Desktop/Stevens/FE800/")
 
@@ -42,21 +50,19 @@ ncol(realDT)
 summary(realDT)
 ```
 
-```{r}
-#Read Stock Data
+```{r LOAD STOCK DATA}
+##  Read Stock Data
 stockdata <- read.csv("stockdata.csv", header = TRUE, sep = ",")
-```
-
-```{r}
-#summarize Stock Data
+##  Summarize Stock Data
 head(stockdata)
+##  Number of Rows in stock market data
+nrow(stockdata)
+
 ```
 
-```{r}
-## Number of Rows in stock market data
-nrow(stockdata)
-```
-```{r}
+```{r SUBSET STOCK DATA }
+## CREATE SUBSETS OF THE STOCK DATA FOR DIFFERENT ANALYISS
+
 overnight_ret_1_min <- subset(stockdata, overnight_1 == 1) ## select the subject of returns that are from close of business to opening of next business day
 ret_1_min <- subset(stockdata, overnight_1 == 0) ## select the subset of 1 minute returns that are intraday
 ret_2_min <- subset(stockdata, overnight_2 == 0) ## select the subset of 2 minute returns that are intraday
@@ -69,19 +75,9 @@ ret_120_min <- subset(stockdata, overnight_120 == 0) ## select the subset of 120
 ret_240_min <- subset(stockdata, overnight_240 == 0) ## select the subset of 240 minute returns that are intraday
 ret_360_min <- subset(stockdata, overnight_360 == 0) ## select the subset of 360 minute returns that are intraday
 
-
-
-```
-```{r}
-
-
-
-
-
-
 ```
 
-```{r Statistics }
+```{r STATISTICS}
 ##  Statistics about 1, 2, 5, 10, 20, 30, 60, 120, 240, and 360-minute returns
 max1 <- max(ret_1_min$ret_1_min) #max return
 min1 <- min(ret_1_min$ret_1_min) #min return
@@ -133,16 +129,16 @@ min360 <- min(ret_360_min$ret_360_min) #min return
 mean360 <- mean(ret_360_min$ret_360_min) #mean
 sd360 <- sd(ret_360_min$ret_360_min) #standard deviation
 
-maxon <- max(overnight_ret_1_min$ret_1_min, na.rm=TRUE) #max return
-minon <- min(overnight_ret_1_min$ret_1_min, na.rm=TRUE) #min return
-meanon <- mean(overnight_ret_1_min$ret_1_min, na.rm=TRUE) #mean
-sdon <- sd(overnight_ret_1_min$ret_1_min, na.rm=TRUE) #standard deviation
+maxon <- max(overnight_ret_1_min$ret_1_min, na.rm=TRUE) #max return (excludes NA values)
+minon <- min(overnight_ret_1_min$ret_1_min, na.rm=TRUE) #min return (excludes NA values)
+meanon <- mean(overnight_ret_1_min$ret_1_min, na.rm=TRUE) #mean (excludes NA values)
+sdon <- sd(overnight_ret_1_min$ret_1_min, na.rm=TRUE) #standard deviation (excludes NA values)
 
 
 ```
 
-```{r}
-## Create Summary Table
+```{r SUMMARY TABLE WITH STATISTICS RESULTS}
+##  Create Summary Table
 
 sumtable <- matrix(c(max1, min1, mean1, sd1, max2, min2, mean2, sd2, max5, min5, mean5, sd5, max10, min10, mean10, sd10, max20, min20, mean20, sd20, max30, min30, mean30, sd30, max60, min60, mean60, sd60, max120, min120, mean120, sd120, max240, min240, mean240, sd240, max360, min360, mean360, sd30, maxon, minon, meanon, sdon), ncol = 4, byrow = TRUE)
 colnames(sumtable) <- c("Max", "Min", "Mean", "Std. Dev")
@@ -153,20 +149,73 @@ sumtable
 
 
 
-```{r}
-##  Histograms
+```{r HISTOGRAMS}
 
-## Histogram of minute by minute stock returns
+## HISTOGRAM OF MINUTE BY MINUTE STOCK RETURNS
+
 hist(ret_1_min$ret_1_min, 
      breaks = 500,
      main = "1 Minute Intraday Returns",
      xlab = "Minute Level Returns", 
      col = "Light Blue")
+
+##  HISTOGRAM OF OVERNIGHT STOCK RETURNS
+
 hist(overnight_ret_1_min$ret_1_min, 
      breaks = 100,
      main = "Overnight Returns",
      xlab = "End of Trading Day to Beginning of Next Trading Day Returns", 
      col = "Red")
+
+```
+
+```{r DENSITY PLOTS}
+
+##  DENSITY PLOTS
+
+d1 <- density(ret_1_min$ret_1_min, from = -0.05, to = 0.05)
+d2 <- density(ret_2_min$ret_2_min, from = -0.05, to = 0.05)
+d5 <- density(ret_5_min$ret_5_min, from = -0.05, to = 0.05)
+d10 <- density(ret_10_min$ret_10_min, from = -0.05, to = 0.05)
+d20 <- density(ret_20_min$ret_20_min, from = -0.05, to = 0.05)
+d30 <- density(ret_30_min$ret_30_min, from = -0.05, to = 0.05)
+d60 <- density(ret_60_min$ret_60_min, from = -0.05, to = 0.05)
+d120 <- density(ret_120_min$ret_120_min, from = -0.05, to = 0.05)
+d240 <- density(ret_240_min$ret_240_min, from = -0.05, to = 0.05)
+d360 <- density(ret_360_min$ret_360_min, from = -0.05, to = 0.05)
+don <- density(overnight_ret_1_min$ret_1_min, na.rm = TRUE, from = -0.05, to = 0.05) #EXCLUDE NA VALUES FROM ANALYSIS (ERROR RESULTS IF YOU DON'T DO THIS)
+
+plot(d1, main = "Denstiy Plot: 1 Minute Returns", xlab = "Distribution of 1 Minute Returns") 
+polygon(d1, col = "Light Blue", border = "Blue")
+plot(d2, main = "Denstiy Plot: 2 Minute Returns", xlab = "Distribution of 2 Minute Returns")
+polygon(d2, col = "Light Blue", border = "Blue")
+plot(d5, main = "Denstiy Plot: 5 Minute Returns", xlab = "Distribution of 5 Minute Returns")
+polygon(d5, col = "Light Blue", border = "Blue")
+plot(d10, main = "Denstiy Plot: 10 Minute Returns", xlab = "Distribution of 10 Minute Returns")
+polygon(d10, col = "Light Blue", border = "Blue")
+plot(d20, main = "Denstiy Plot: 20 Minute Returns", xlab = "Distribution of 20 Minute Returns")
+polygon(d20, col = "Light Blue", border = "Blue")
+plot(d30, main = "Denstiy Plot: 30 Minute Returns", xlab = "Distribution of 30 Minute Returns")
+polygon(d30, col = "Light Blue", border = "Blue")
+plot(d60, main = "Denstiy Plot: 60 Minute Returns", xlab = "Distribution of 60 Minute Returns")
+polygon(d60, col = "Light Blue", border = "Blue")
+plot(d120, main = "Denstiy Plot: 120 Minute Returns", xlab = "Distribution of 120 Minute Returns")
+polygon(d120, col = "Light Blue", border = "Blue")
+plot(d240, main = "Denstiy Plot: 240 Minute Returns", xlab = "Distribution of 240 Minute Returns")
+polygon(d240, col = "Light Blue", border = "Blue")
+plot(d360, main = "Denstiy Plot: 360 Minute Returns", xlab = "Distribution of 360 Minute Returns")
+polygon(d360, col = "Light Blue", border = "Blue")
+plot(don, main = "Denstiy Plot: Overnight Returns", xlab = "Distribution of Overnight Returns")
+polygon(don, col = "Light Green", border = "Green")
+
+
+```
+
+```{r}
+## LOAD TRUMP TWEETS
+
+dt <- read.csv("dt_tweets.csv", sep = ",", header = TRUE)
+dt
 
 ```
 
