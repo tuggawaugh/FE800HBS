@@ -15,11 +15,13 @@ When you save the notebook, an HTML file containing the code and output will be 
 ##  INSTALL REQUIRED PACKAGES AND LIBRARIES
 install.packages("sm")
 install.packages("ggplot2")
+install.packages("sqldf")
 
 
 ##  INSTALL LIBRARIES
 library(sm)
 library(ggplot2)
+library(sqldf)
 ```
 
 
@@ -171,7 +173,7 @@ hist(overnight_ret_1_min$ret_1_min,
 
 ```{r DENSITY PLOTS}
 
-##  DENSITY PLOTS
+##  CREATE DENSITY PLOT DISTRIBUTIONS
 
 d1 <- density(ret_1_min$ret_1_min, from = -0.05, to = 0.05)
 d2 <- density(ret_2_min$ret_2_min, from = -0.05, to = 0.05)
@@ -184,6 +186,9 @@ d120 <- density(ret_120_min$ret_120_min, from = -0.05, to = 0.05)
 d240 <- density(ret_240_min$ret_240_min, from = -0.05, to = 0.05)
 d360 <- density(ret_360_min$ret_360_min, from = -0.05, to = 0.05)
 don <- density(overnight_ret_1_min$ret_1_min, na.rm = TRUE, from = -0.05, to = 0.05) #EXCLUDE NA VALUES FROM ANALYSIS (ERROR RESULTS IF YOU DON'T DO THIS)
+
+
+##  PLOT DENSITY PLOTS
 
 plot(d1, main = "Denstiy Plot: 1 Minute Returns", xlab = "Distribution of 1 Minute Returns") 
 polygon(d1, col = "Light Blue", border = "Blue")
@@ -208,7 +213,6 @@ polygon(d360, col = "Light Blue", border = "Blue")
 plot(don, main = "Denstiy Plot: Overnight Returns", xlab = "Distribution of Overnight Returns")
 polygon(don, col = "Light Green", border = "Green")
 
-
 ```
 
 ```{r}
@@ -219,4 +223,53 @@ dt
 
 ```
 
+```{r TRUMP TWEET DATA PROFILING}
+##  DATA PROFILING USING SQLDF
+
+##  Number of Tweets in the Data Set
+sqldf("SELECT COUNT(*) FROM dt")
+
+```
+
+```{r COUNT OF TWEETS IN / OUT OF TRADING HOURS}
+
+##  Number of Tweets During / Outside of Trading Hours
+sqldf("SELECT DURINGTRADINGHOURS, COUNT(*)
+      FROM dt
+      GROUP BY 1")
+```
+
+```{r BAR PLOT OF TRUMPS TWEETS PER HOUR}
+
+
+##  Number of Tweets Per Hour of the Day
+DT1 <- sqldf('SELECT HOUR, COUNT(*) as numtweets 
+      FROM dt 
+      GROUP BY hour')
+
+x <- 0:23 # NEEDED IN PLOT BELOW TO CREATE X AXIS
+
+barplot(DT1$numtweets, 
+        main = "Donald Trump Tweets by Hour of the Day",
+        xlab = "Hour of the Day", 
+        ylab = "Number of Tweets",
+        col = "light blue",
+        names.arg = c(x),
+        cex.lab=1)
+```
+
+```{r}
+
+## Number of Tweets by Year and Month
+DT2 <- sqldf('SELECT YEAR, MONTH, DATE, COUNT(*) as numtweets
+      FROM dt
+      GROUP BY 1, 2, 3')
+
+plot(DT2$numtweets,type = "l", 
+     main = "Number of Tweets by Day", 
+     xlab = "Day", 
+     ylab = "Number of Tweets", 
+     col = "Blue")
+
+```
 
