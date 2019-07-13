@@ -5,8 +5,6 @@ install.packages("readr")
 library(readr)
 install.packages("ggplot2")
 library(ggplot2)
-install.packages("dplyr")
-library(dplyr)
 install.packages("stringr")
 library(stringr)
 install.packages("tidyr")
@@ -26,6 +24,11 @@ install.packages("igraph")
 library(igraph)
 install.packages("ggraph")
 library(ggraph)
+# last package
+install.packages("dplyr")
+library(dplyr)
+tidytext::unnest_tokens()
+
 
 ### Create a Data Frame
 getwd()
@@ -83,10 +86,10 @@ tweet_messages <- DTTweets %>%
 
 head(tweet_messages)
 
-# plot the top 15 words
+# plot the top 25 words
 tweet_messages %>%
   count(word, sort = TRUE) %>%
-  top_n(15) %>%
+  top_n(25) %>%
   mutate(word = reorder(word, n)) %>%
   ggplot(aes(x = word, y = n)) +
   geom_col() +
@@ -96,3 +99,5 @@ tweet_messages %>%
        y = "Unique words",
        title = "Count of unique words found in tweets")
 ## Selecting by n
+
+
