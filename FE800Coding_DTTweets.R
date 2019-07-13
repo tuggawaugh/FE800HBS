@@ -40,7 +40,6 @@ realDT <- readr::read_csv("dt_tweets.csv")
 
 ## see first 6 rows of the dataset
 head(realDT)
-
 tail(realDT)
 
 ## check number of rows and columns
@@ -98,6 +97,92 @@ tweet_messages %>%
   labs(x = "Count",
        y = "Unique words",
        title = "Count of unique words found in tweets")
-## Selecting by n
 
+## REMOVE STOP WORDS
+data("stop_words")
+# how many words do you have including the stop words?
+nrow(tweet_messages)
+## [1] 205078
+
+tweet_messages_clean <- tweet_messages %>%
+  anti_join(stop_words) %>%
+  filter(!word == "rt")
+## Joining, by = "word"
+
+# how many words after removing the stop words?
+nrow(tweet_messages_clean)
+## [1] 97409
+
+# plot the top 25 words again after removing stop words
+tweet_messages_clean %>%
+  count(word, sort = TRUE) %>%
+  top_n(25) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(x = word, y = n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip() +
+  labs(x = "Count",
+       y = "Unique words",
+       title = "Count of unique words found in tweets")
+
+
+# Remove URLs
+# cleanup
+tweet_messages_clean <- DTTweets %>%
+  mutate(tweet_text = gsub("\\s?(f|ht)(tp)(s?)(://)([^\\.]*)[\\.|/](\\S*)", 
+                           "", tweet_text)) %>% 
+  dplyr::select(tweet_text) %>%
+  unnest_tokens(word, tweet_text) %>% 
+  anti_join(stop_words) %>%
+  filter(!word == "rt") # remove all rows that contain "rt" or retweet
+## Joining, by = "word"
+
+# plot the top 25 words again after removing stop words AND URLs
+tweet_messages_clean %>%
+  count(word, sort = TRUE) %>%
+  top_n(25) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(x = word, y = n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip() +
+  labs(x = "Count",
+       y = "Unique words",
+       title = "Count of unique words found in tweets")
+
+### PAIRED WORD Analysis
+
+tweets_paired <- DTTweets %>%
+  dplyr::select(tweet_text) %>%
+  mutate(tweet_text = removeWords(tweet_text, stop_words$word)) %>%
+  mutate(tweet_text = gsub("\\brt\\b|\\bRT\\b", "", tweet_text)) %>%
+  mutate(tweet_text = gsub("http://*", "", tweet_text)) %>%
+  unnest_tokens(paired_words, tweet_text, token = "ngrams", n = 2)
+
+tweets_paired %>%
+  count(paired_words, sort = TRUE)
+
+## Separate Words into Columns
+tweets_separated <- tweets_paired %>%
+  separate(paired_words, c("word1", "word2"), sep = " ")
+
+# new bigram counts:
+word_counts <- tweets_separated %>%
+  count(word1, word2, sort = TRUE)
+word_counts
+# word_counts[1:50,]
+
+# plot word network - NEEDS FIXING
+word_counts %>%
+  filter(n >= 30) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n, edge_width = n)) +
+  geom_node_point(color = "darkslategray4", size = 3) +
+  geom_node_text(aes(label = name), vjust = 1.8, size = 3) +
+  labs(title = "Word Network: Donald Trump Tweets",
+       subtitle = "Text mining twitter data ",
+       x = "", y = "") +
+  theme_void()
 
