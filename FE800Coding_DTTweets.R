@@ -68,7 +68,11 @@ nrow(DTTweets)
 ncol(DTTweets)
 colnames(DTTweets)
 
+mode(DTTweets$date_time)
 mode(DTTweets$tweet_text)
+is.numeric(DTTweets$tweet_text)
+DTTweets$tweet_text <- as.character(DTTweets$tweet_text)
+is.character(DTTweets$tweet_text)
 
 
 ## EXPLORE COMMON WORDS
@@ -77,12 +81,18 @@ tweet_messages <- DTTweets %>%
   dplyr::select(tweet_text) %>%
   unnest_tokens(word, tweet_text)
 
-head(flood_tweet_messages)
-##            word
-## 1      download
-## 1.1 centurylink
-## 1.2   community
-## 1.3       flood
-## 1.4      impact
-## 1.5      report
+head(tweet_messages)
 
+# plot the top 15 words
+tweet_messages %>%
+  count(word, sort = TRUE) %>%
+  top_n(15) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(x = word, y = n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip() +
+  labs(x = "Count",
+       y = "Unique words",
+       title = "Count of unique words found in tweets")
+## Selecting by n
