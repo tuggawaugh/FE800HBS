@@ -32,11 +32,13 @@ tidytext::unnest_tokens()
 
 ### Create a Data Frame
 getwd()
-setwd("C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS")
+#setwd("C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS")
+setwd("C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS")
 
 ## read Donald Trump tweets downloaded from trumptwitterarchive.com 
-# realDT <- read.csv("DonaldTrumpTweets.csv",header = TRUE, stringsAsFactors=FALSE)
-realDT <- readr::read_csv("dt_tweets.csv")
+realDT <- read.csv("dt_tweets.csv",header = TRUE, stringsAsFactors=FALSE)
+#realDT <- readr::read_csv("dt_tweets.csv")
+
 
 ## see first 6 rows of the dataset
 head(realDT)
@@ -81,7 +83,7 @@ is.character(DTTweets$tweet_text)
 
 tweet_messages <- DTTweets %>%
   dplyr::select(tweet_text) %>%
-  unnest_tokens(word, tweet_text)
+  tidytext::unnest_tokens(word, tweet_text)
 
 head(tweet_messages)
 
@@ -99,10 +101,12 @@ tweet_messages %>%
        title = "Count of unique words found in tweets")
 
 ## REMOVE STOP WORDS
+#installed tm, tidytext packages manually
 data("stop_words")
 # how many words do you have including the stop words?
 nrow(tweet_messages)
 ## [1] 205078
+## [1] 208009 bp
 
 tweet_messages_clean <- tweet_messages %>%
   anti_join(stop_words) %>%
@@ -112,6 +116,8 @@ tweet_messages_clean <- tweet_messages %>%
 # how many words after removing the stop words?
 nrow(tweet_messages_clean)
 ## [1] 97409
+## [1] 99906 bp
+
 
 # plot the top 25 words again after removing stop words
 tweet_messages_clean %>%
@@ -173,7 +179,8 @@ word_counts <- tweets_separated %>%
 word_counts
 # word_counts[1:50,]
 
-# plot word network - NEEDS FIXING
+# plot word network 
+# fixed by manually installing igraph,ggraph then running code
 word_counts %>%
   filter(n >= 30) %>%
   graph_from_data_frame() %>%
@@ -185,4 +192,21 @@ word_counts %>%
        subtitle = "Text mining twitter data ",
        x = "", y = "") +
   theme_void()
+
+
+#Sentiment analysis
+library(tidytext)
+install.packages("textdata")
+
+sentiments
+
+#NEEDS FIXING
+#afinn lexicon assigns words with a score that runs between -5 and 5 (positive score, positive sentiment)
+get_sentiments("afinn")
+
+# bing lexicon categorizes words in a binary fashion into positive and negative categories
+get_sentiments("bing")
+
+# nrc categorizes words in a binary fashion ("yes"/"no") into categories of positive, negative, anger, anticipation, disgust, fear, joy, sadness, surprise, and trust.
+#get_sentiments("nrc")
 
