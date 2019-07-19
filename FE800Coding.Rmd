@@ -27,7 +27,8 @@ library(sqldf)
 
 ```{r SET WORKING DIRECTORY}
 getwd()
-setwd("C:/Users/binta.d.patel/Desktop/Stevens/FE800/")
+#setwd("C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS")
+setwd("C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS")
 
 ## read Donald Trump tweets downloaded from trumptwitterarchive.com 
 realDT <- read.csv("DonaldTrumpTweets.csv",header = TRUE)

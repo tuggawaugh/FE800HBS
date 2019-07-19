@@ -101,7 +101,6 @@ tweet_messages %>%
        title = "Count of unique words found in tweets")
 
 ## REMOVE STOP WORDS
-#installed tm, tidytext packages manually
 data("stop_words")
 # how many words do you have including the stop words?
 nrow(tweet_messages)
@@ -194,19 +193,20 @@ word_counts %>%
   theme_void()
 
 
-#Sentiment analysis
+#Sentiment Analysis
 library(tidytext)
 install.packages("textdata")
 
 sentiments
 
-#NEEDS FIXING
 #afinn lexicon assigns words with a score that runs between -5 and 5 (positive score, positive sentiment)
 get_sentiments("afinn")
 
 # bing lexicon categorizes words in a binary fashion into positive and negative categories
 get_sentiments("bing")
 
+#NEEDS FIXING
 # nrc categorizes words in a binary fashion ("yes"/"no") into categories of positive, negative, anger, anticipation, disgust, fear, joy, sadness, surprise, and trust.
-#get_sentiments("nrc")
+get_sentiments("nrc")
 
+get_sentiments("loughran")
