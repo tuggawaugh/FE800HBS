@@ -28,6 +28,9 @@ library(ggraph)
 install.packages("dplyr")
 library(dplyr)
 # tidytext::unnest_tokens()
+install.packages("wordcloud")
+library(wordcloud)
+
 
 
 ### Create a Data Frame
@@ -59,10 +62,16 @@ is.factor(realDT["text"])
 # is.String(realDT["text"])
 
 
+# Create Time ID to uniquely identify each tweet
+realDT <- transform(realDT,timeID=paste0(year,month,date,hour,minute,second))
+colnames(realDT)
+head(realDT["timeID"])
+
 ## CREATE DATA FRAME WITH JUST DATE AND TWEET TEXT FOR MINING (need to fix time in Created_At column)
 # DTTweets <- as.data.frame(realDT)
 # DTTweets <- realDT[2:3]
-DTTweets <- data.frame(date_time = realDT$created_at,
+DTTweets <- data.frame(tweet_id = realDT$timeID,
+                       date_time = realDT$created_at,
                          tweet_text = realDT$text)
 # DTTweets <- data.frame(tweet_text = realDT$text)
 is.factor(DTTweets["tweet_text"])
@@ -72,6 +81,10 @@ class(DTTweets)
 nrow(DTTweets)
 ncol(DTTweets)
 colnames(DTTweets)
+
+mode(DTTweets$tweet_id)
+DTTweets$tweet_id <- as.numeric(DTTweets$tweet_id)
+is.numeric(DTTweets$tweet_id)
 
 mode(DTTweets$date_time)
 mode(DTTweets$tweet_text)
@@ -87,6 +100,23 @@ tweet_messages <- DTTweets %>%
   tidytext::unnest_tokens(word, tweet_text)
 
 head(tweet_messages)
+
+# DTTweets_Token <- tweet_messages
+# 
+# tweet_messages_2 <- DTTweets %>%
+#   dplyr::select(tweet_text) %>%
+#   tidytext::unnest_tokens(word, tweet_text)
+# 
+# head(tweet_messages_2)
+
+
+# tweet_sentences <- DTTweets %>%
+#   dplyr::select(tweet_text) %>%
+#   tidytext::unnest_tokens(sentence, tweet_text, token = "sentences")
+
+d %>%
+  unnest_tokens(sentence, txt, token = "sentences")
+
 
 # plot the top 25 words
 tweet_messages %>%
@@ -157,6 +187,14 @@ tweet_messages_clean %>%
        y = "Unique words",
        title = "Count of unique words found in tweets")
 
+mode(tweet_messages_clean)
+# tweet_messages_clean <- tweet_messages_clean[!tweet_messages_clean=="is.â"]
+# tweet_messages_clean <- tweet_messages_clean[!tweet_messages_clean=="â"]
+# tweet_messages_clean <- tweet_messages_clean[!tweet_messages_clean=="t.co"]
+# tweet_messages_clean <- tweet_messages_clean[!tweet_messages_clean=="https"]
+# 
+# tweet_messages_clean <- tweet_messages_clean[-1,]
+
 ### PAIRED WORD Analysis
 # workaround install package tm
 
@@ -225,3 +263,44 @@ get_sentiments("loughran")
 ## Extracts the NRC sentiment scores for each tweet
 #nrc_data <- get_nrc_sentiment(tweet_text_only)
 
+
+## BING WORD COUNT
+
+get_sentiments("bing") %>% 
+  count(sentiment)
+
+bing_word_counts <- tweet_messages_clean %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  ungroup()
+
+bing_word_counts
+
+bing_word_counts %>%
+  group_by(sentiment) %>%
+  top_n(10) %>%
+  ungroup() %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free_y") +
+  labs(y = "Contribution to sentiment",
+       x = NULL) +
+  coord_flip()
+
+tweet_messages_clean %>%
+  anti_join(stop_words) %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 100))
+
+## AFINN WORD COUNT
+get_sentiments("afinn") %>% 
+  count(value)
+
+afinn_word_counts <- tweet_messages_clean %>%
+  inner_join(get_sentiments("afinn")) %>%
+  count(word, value, sort = TRUE) %>%
+  ungroup()
+
+afinn_word_counts
+afinn_word_counts("-5")
