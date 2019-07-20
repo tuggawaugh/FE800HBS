@@ -33,7 +33,8 @@ tidytext::unnest_tokens()
 ### Create a Data Frame
 getwd()
 #setwd("C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS")
-setwd("C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS")
+#setwd("C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS")
+setwd("C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS")
 
 ## read Donald Trump tweets downloaded from trumptwitterarchive.com 
 realDT <- read.csv("dt_tweets.csv",header = TRUE, stringsAsFactors=FALSE)
