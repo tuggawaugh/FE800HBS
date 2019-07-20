@@ -302,5 +302,5 @@ hist(DTTweets_Afinn$net_sentiment)
 
 DTTweets_AfinnCount <- DTTweets_Afinn %>% 
   count(net_sentiment)
+DTTweets_AfinnCount <- as.data.frame(DTTweets_AfinnCount)
 DTTweets_AfinnCount
-
