@@ -290,7 +290,9 @@ DTTweets_Afinn <-  afinn_word_value %>%
 DTTweets_Afinn
 DTTweets_Afinn[1:10,]
 nrow(DTTweets_Afinn)
-# THIS IS THE DATA SET WHICH NET SENTIMENT SCORE FOR EACH TWEET (TIME_ID)
+# THIS IS THE DATA SET WITH NET SENTIMENT SCORE FOR EACH TWEET (TIME_ID)
+# THIS SHOULD FEED INTO STOCK ANALYSIS
+
 # Export the data set with Net Sentiment Score
 write.csv(DTTweets_Afinn,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Afinn.csv', row.names = FALSE)
 
