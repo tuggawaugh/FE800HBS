@@ -316,9 +316,11 @@ afinn_word_value <- tweet_messages_clean %>%
 afinn_word_value
 colnames(afinn_word_value)
 mode(afinn_word_value$message_floor_id)
-afinn_word_value$message_floor_id <- as.character(afinn_word_value$message_floor_id)
-mode(afinn_word_value$message_floor_id)
+# afinn_word_value$message_floor_id <- as.character(afinn_word_value$message_floor_id)
+# mode(afinn_word_value$message_floor_id)
 
-afinn_word_value[1:200,]
+afinn_word_value[1:50,]
 
+afinn_word_value 
+aggregate(value ~ message_floor_id, afinn_word_value, sum)
 
