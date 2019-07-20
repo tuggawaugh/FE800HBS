@@ -71,7 +71,6 @@ DTTweets_CSV$second <- formatC(DTTweets_CSV$second, flag=0, width=2)
 DTTweets_CSV <- transform(DTTweets_CSV,timeID=paste0(year,month,date,hour,minute))
 colnames(DTTweets_CSV)
 head(DTTweets_CSV["timeID"])
-DTTweets_CSV$timeID <- as.numeric(DTTweets_CSV$timeID)
 mode(DTTweets_CSV$timeID)
 
 ## Export CSV
@@ -160,7 +159,12 @@ DTTweets_Words_clean <- DTTweets_Core %>%
   unnest_tokens(word, tweet_text) %>% 
   anti_join(stop_words) %>%
   filter(!word == "rt") # remove all rows that contain "rt" or retweet
-## Joining, by = "word"
+
+# DTTweets_Words_clean$word <- DTTweets_Words_clean$word[DTTweets_Words_clean$word!= "amp"]
+DTTweets_Words_clean <- DTTweets_Words_clean[DTTweets_Words_clean$word!= "amp", ]
+DTTweets_Words_clean <- DTTweets_Words_clean[DTTweets_Words_clean$word!= "â", ]
+DTTweets_Words_clean <- DTTweets_Words_clean[DTTweets_Words_clean$word!= "trump", ]
+DTTweets_Words_clean
 
 # plot the top 25 words again after removing stop words AND URLs
 DTTweets_Words_clean %>%
@@ -174,6 +178,7 @@ DTTweets_Words_clean %>%
   labs(x = "Count",
        y = "Unique words",
        title = "Count of unique words found in tweets")
+
 
 mode(DTTweets_Words_clean)
 
@@ -279,7 +284,7 @@ afinn_word_value[1:10,]
 # Consolidate Sentiment values by Tweet using aggregate() function
 DTTweets_AfinnValues <- aggregate(value ~ time_id, afinn_word_value, sum)
 head(DTTweets_AfinnValues)
-DTTweets_AfinnValues[order(DTTweets_AfinnValues$tweet_id),]
+DTTweets_AfinnValues[order(DTTweets_AfinnValues$time_id),]
 DTTweets_AfinnValues[1:10,]
 # head(aggregate(value ~ ., afinn_word_value, sum))
 
@@ -288,7 +293,7 @@ DTTweets_Afinn <-  afinn_word_value %>%
   group_by(time_id) %>% 
   summarise(net_sentiment = sum(value))
 DTTweets_Afinn
-DTTweets_Afinn[1:10,]
+DTTweets_Afinn[1:20,]
 nrow(DTTweets_Afinn)
 # THIS IS THE DATA SET WITH NET SENTIMENT SCORE FOR EACH TWEET (TIME_ID)
 # THIS SHOULD FEED INTO STOCK ANALYSIS
