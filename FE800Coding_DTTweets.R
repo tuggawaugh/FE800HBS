@@ -27,7 +27,7 @@ library(ggraph)
 # last package
 install.packages("dplyr")
 library(dplyr)
-tidytext::unnest_tokens()
+# tidytext::unnest_tokens()
 
 
 ### Create a Data Frame
@@ -198,6 +198,7 @@ word_counts %>%
 #Sentiment Analysis
 library(tidytext)
 install.packages("textdata")
+library(textdata)
 
 sentiments
 
