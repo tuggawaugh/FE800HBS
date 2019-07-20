@@ -157,6 +157,7 @@ tweet_messages_clean %>%
        title = "Count of unique words found in tweets")
 
 ### PAIRED WORD Analysis
+# workaround install package tm
 
 tweets_paired <- DTTweets %>%
   dplyr::select(tweet_text) %>%
@@ -205,8 +206,20 @@ get_sentiments("afinn")
 # bing lexicon categorizes words in a binary fashion into positive and negative categories
 get_sentiments("bing")
 
-#NEEDS FIXING
-# nrc categorizes words in a binary fashion ("yes"/"no") into categories of positive, negative, anger, anticipation, disgust, fear, joy, sadness, surprise, and trust.
-get_sentiments("nrc")
-
 get_sentiments("loughran")
+
+
+#############################NRC lexicon is no longer available within tidytext
+## nrc categorizes words in a binary fashion ("yes"/"no") into categories of positive, negative, anger, anticipation, disgust, fear, joy, sadness, surprise, and trust.
+## NRC lexicon is no longer available within tidytext as per https://github.com/juliasilge/tidytext/issues/144
+#get_sentiments("nrc")
+#install.packages("syuzhet")
+#library(syuzhet)
+
+# Extract only the text column from the DDTweet dataframe
+#tweet_text_only <- DTTweets$tweet_text
+#head(tweet_text_only)
+
+## Extracts the NRC sentiment scores for each tweet
+#nrc_data <- get_nrc_sentiment(tweet_text_only)
+
