@@ -101,6 +101,10 @@ tweet_messages <- DTTweets %>%
 
 head(tweet_messages)
 
+tweet_messages$message_id <- as.numeric(rownames(tweet_messages))
+tweet_messages$message_floor_id <- floor(tweet_messages$message_id)
+tweet_messages[1:200,]
+
 # DTTweets_Token <- tweet_messages
 # 
 # tweet_messages_2 <- DTTweets %>%
@@ -108,14 +112,12 @@ head(tweet_messages)
 #   tidytext::unnest_tokens(word, tweet_text)
 # 
 # head(tweet_messages_2)
-
+# mode(tweet_messages_2)
+# rownames(tweet_messages_2)
 
 # tweet_sentences <- DTTweets %>%
 #   dplyr::select(tweet_text) %>%
 #   tidytext::unnest_tokens(sentence, tweet_text, token = "sentences")
-
-d %>%
-  unnest_tokens(sentence, txt, token = "sentences")
 
 
 # plot the top 25 words
@@ -293,7 +295,9 @@ tweet_messages_clean %>%
   count(word) %>%
   with(wordcloud(word, n, max.words = 100))
 
-## AFINN WORD COUNT
+## AFINN WORD COUNT and WORD VALUE
+get_sentiments("afinn")
+
 get_sentiments("afinn") %>% 
   count(value)
 
@@ -303,4 +307,18 @@ afinn_word_counts <- tweet_messages_clean %>%
   ungroup()
 
 afinn_word_counts
-afinn_word_counts("-5")
+mode(afinn_word_counts$value)
+
+afinn_word_value <- tweet_messages_clean %>%
+  inner_join(get_sentiments("afinn"))
+
+
+afinn_word_value
+colnames(afinn_word_value)
+mode(afinn_word_value$message_floor_id)
+afinn_word_value$message_floor_id <- as.character(afinn_word_value$message_floor_id)
+mode(afinn_word_value$message_floor_id)
+
+afinn_word_value[1:200,]
+
+
