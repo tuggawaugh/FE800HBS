@@ -67,7 +67,7 @@ DTTweets_CSV$hour <- formatC(DTTweets_CSV$hour, flag=0, width=2)
 DTTweets_CSV$minute <- formatC(DTTweets_CSV$minute, flag=0, width=2)
 DTTweets_CSV$second <- formatC(DTTweets_CSV$second, flag=0, width=2)
 
-## Create Time ID up to Minute to uniquely identify each tweet
+## Create TimeID variable up to Minute to uniquely identify each tweet
 DTTweets_CSV <- transform(DTTweets_CSV,timeID=paste0(year,month,date,hour,minute))
 colnames(DTTweets_CSV)
 head(DTTweets_CSV["timeID"])
