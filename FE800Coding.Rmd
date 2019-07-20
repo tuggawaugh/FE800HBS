@@ -172,20 +172,20 @@ dt_ret_360_min <- subset(stockdata, dttweetflag == 1, overnight_360 == 0) ## sel
 
 ```{r STATISTICS DT}
 ##  Statistics about 1, 2, 5, 10, 20, 30, 60, 120, 240, and 360-minute returns
-max1 <- max(ret_1_min$ret_1_min) #max return
-min1 <- min(ret_1_min$ret_1_min) #min return
-mean1 <- mean(ret_1_min$ret_1_min) #mean
-sd1 <- sd(ret_1_min$ret_1_min) #standard deviation
+dt_max1 <- max(ret_1_min$ret_1_min) #max return
+dt_min1 <- min(ret_1_min$ret_1_min) #min return
+dt_mean1 <- mean(ret_1_min$ret_1_min) #mean
+dt_sd1 <- sd(ret_1_min$ret_1_min) #standard deviation
 
-max2 <- max(ret_2_min$ret_2_min) #max return
-min2 <- min(ret_2_min$ret_2_min) #min return
-mean2 <- mean(ret_2_min$ret_2_min) #mean
-sd2 <- sd(ret_2_min$ret_2_min) #standard deviation
+dt_max2 <- max(ret_2_min$ret_2_min) #max return
+dt_min2 <- min(ret_2_min$ret_2_min) #min return
+dt_mean2 <- mean(ret_2_min$ret_2_min) #mean
+dt_sd2 <- sd(ret_2_min$ret_2_min) #standard deviation
 
-max5 <- max(ret_5_min$ret_5_min) #max return
-min5 <- min(ret_5_min$ret_5_min) #min return
-mean5 <- mean(ret_5_min$ret_5_min) #mean
-sd5 <- sd(ret_5_min$ret_5_min) #standard deviation
+dt_max5 <- max(ret_5_min$ret_5_min) #max return
+dt_min5 <- min(ret_5_min$ret_5_min) #min return
+dt_mean5 <- mean(ret_5_min$ret_5_min) #mean
+dt_sd5 <- sd(ret_5_min$ret_5_min) #standard deviation
 
 max10 <- max(ret_10_min$ret_10_min) #max return
 min10 <- min(ret_10_min$ret_10_min) #min return
