@@ -49,9 +49,9 @@ DTTweets_CSV <- read.csv("dt_tweets.csv",header = TRUE, stringsAsFactors=FALSE)
 head(DTTweets_CSV)
 tail(DTTweets_CSV)
 
-## check number of rows and columns
+## check number of rows and columns (does not include retweets)
 nrow(DTTweets_CSV)
-# [1] 8030
+# [1] 7151
 ncol(DTTweets_CSV)
 # [1] 16
 
@@ -87,6 +87,7 @@ DTTweets_Core <- data.frame(time_id = DTTweets_CSV$timeID,
 is.factor(DTTweets_Core["tweet_text"])
 summary(DTTweets_Core)
 head(DTTweets_Core)
+nrow(DTTweets_Core)
 colnames(DTTweets_Core)
 
 ## Validate the mode / class
@@ -321,7 +322,7 @@ DTTweets_AfinnCount
 dt_tweets_copy <- DTTweets_Core
 
 nrow(dt_tweets_copy)
-# [1] 8030
+# [1] 7151
 ncol(dt_tweets_copy)
 # [1] 4
 
@@ -340,16 +341,32 @@ nrow(sp_constituents_csv)
 ncol(sp_constituents_csv)
 # [1] 3
 
+## Create a data frame with just s&p company names
+sp_constituents_csv_Name <- data.frame(Name = sp_constituents_csv$Name)
+nrow(sp_constituents_csv_Name)
+summary(sp_constituents_csv_Name)
+head(sp_constituents_csv_Name)
+colnames(sp_constituents_csv_Name)
+
 
 #####NEEDS FIXING
 #add a column to dt_tweets_copy to flag where keyword from s&p file matches
 #dt_tweets_copy$sp_matched_tweets <- sapply(dt_tweets_copy$text, function(x) paste(grep(x, sp_constituents_csv$Name), collapse = ","))
-#dt_tweets_copy$sp_matched_tweets <- sapply(dt_tweets_copy$text, function(x) paste(grep(x, sp_constituents_csv$Name, value = TRUE), collapse = ","))
+#dt_tweets_copy$sp_matched_tweets <- sapply(dt_tweets_copy$tweet_text, function(x) paste(grep(x, sp_constituents_csv_Name, value = TRUE), collapse = ","))
 
+colnames(dt_tweets_copy)
 
+# create a df where s&p companies are mentioned in a tweet
 dt_tweets_copy_filter <- filter(dt_tweets_copy,
-                           grepl('Boeing', tweet_text))
+                           grepl('3m|a.o. smith|abbott|abbvie|accenture|activision|acuity brands|adobe|advance auto parts|advanced micro devices|aes|aetna|affiliated managers group|aflac|agilent|air products & chemicals|akamai|alaska air|albermarle|alexandria real estate|alexion|align technology|allegion|allergan|alliance data|alliant energy|allstate|google|altria|amazon|ameren|american airlines|american electric power|american express|amex|aig|american tower|american water|ameriprise financial|abc|ametek|amgen|amphenol|anadarko petroleum|analog devices|andeavor|ansys|anthem|aon|apache corporation|aiv|apple|applied materials|aptiv|archer daniels|arconic inc|arthur j. gallagher|assurant inc|at&t|autodesk|adp|autozone|avalon bay|avery dennison|baker hughes|ball corp|bank of america|b of a|baxter|bb&t|becton|berkshire hathaway|best buy|biogen|black rock|h&r block|boeing|booking holdngs|borgwarner|boston properties|boston scientific|brighthouse financial|bms|bristol myers|broadcom|brown forman|bfc|robinson worldwide|ca inc|cabot oil & gas|cadence design|campbell soup|capital one|cardinal heath|carmax|carnival|caterpillar|cboe global|cbre|cbs|celgene|centene|center point energy|century link|cerner|cf industries holdings|charles schwab|charter communications|chevron|chipotle|chubb limited|church & dwight|cigna|cimarex energy|cincinnati financial|cintas|cisco|citigroup|citizens financial|citrix systems|cme group|cms energy|coke|coca cola|cognizant technology|colgate palmolive|colgate|comcast|comerica|conagra|concho resources|conoco phillips|consolidated edison|constellation brands|corning|costco|coty|crown castle|csra|csx|cummins|cvs|dhi|danaher|darden restaurants|davita|deere|delta|dentsply sirona|devon energy|digital realty trust|discover financial|discovery|discovery inc|dish network|dollar general|dollar tree|dominion energy|dover corp|dow dupont|dr pepper|dte energy|duke energy|duke realty|dxc|etrade|eastman chemical|eaton|ebay|ecolab|edison international|edwards lifesciences|electronic arts|emerson electric|entergy|envision healthcare|eog|eqt|equifax|equinix|equity residential|essex property trust|estee lauder|everest group|eversource energy|exelon|expedia|expeditors international|express scripts|extra space storage|exxon|exxon mobil|f5 networks|facebook|fastenal|federal realty|fedex|fidelity national|fifth third|first energy|fiserv|flir|flowserve|fluor|fmc|foot locker|ford|fortive|fortune brands|franklin resources|freeport mcmoran|gap inc|garmin|gartner|general dynamics|ge|general electric|general growth properties|general mills|general motors|genuine parts|gilead sciences|global payments|goldman|goldman sachs|goodyear|grainger|halliburton|hanes|harley|harley davidson|harris|hartford financial|hasbro|hca|hcp|helmerich payne|henry schein|hess|hpe|hewlett packard|hilton|hologic|home depot|honeywell|hormel foods|host hotels|hp|humana|huntington bancshares|huntington ingalls|idexx|ihs markit|illinois tool works|illumina|incyte|ingersoll rand|intel corp|intercontinental exchange|ibm|international paper|interpublic group|fragrances intl|intuit|intuitive sugical|invesco|ipg photonic|iqvia holdings|iron mountain|j. b. hunt|jacobs engineering|smucker|j&j|johnson & johnson|johnson controls|jpmorgan|juniper networks|kansas city southern|kellogg|key corp|kimberly clark|kimco realty|kinder morgan|kla tencor|kohls|kraft|heinz|kroger|l brands|l-3 communications|labcorp|lam research|leggett platt|lennar|leucadia national|eli lilly|lincoln national|lkq|lockheed|lockheed martin|loews|lowes|lyondell basell|m&t bank|macerich|macys|marathon oil|marathon petroleum|marriott|marsh|martin marietta|masco|mastercard|mattel|mccormick & co|mcdonalds|mckesson corp|medtronic|merck|met life|mettler toledo|mgm|kors|microchip technology|micron technology|microsoft|midamerica apartments|mohawk industries|molson coors|mondelez|monsanto|monster beverage|moodys|morgan stanley|motorola|mylan|nasdaq|national oilwell|navient|nektar therapeutics|netapp|netflix|newell brands|newfield exploration|newmont mining|news corp|next era|nielsen|nike|nisource|noble energy|nordstrom|norfolk southern|northern trust|northrop grumman|norwegian cruise|nrg|nucor|nvidia|oreilly|occidental petroleum|omnicom group|oneok|oracle|paccar|packaging corporation of america|parker hannifin|paychex|paypal|pentair|peoples united|pepsico|perkinelmer|perrigo|pfizer|pg&e|Phillip morris|phillips|pinnacle west|pioneer natural|pnc|ralph lauren|ppg|ppl|praxair|principal financial|p&g|procter & gamble|progressive corp|prologis|prudential|prudential financial|public serv enterprise|public storage|pulte homes|pvh|qorvo|qualcomm|quanta services|quest diagnostics|range resources|raymond james|raytheon|realty income|red hat|regency centers|regeneron|regions financial|republic services|resmed|robert half|rockwell automation|rockwell collins|roper technologies|ross stores|royal caribbean|s&p global|salesforce.com|sba|scana|schlumberger|seagate technology|sealed air|sempra energy|sherwin williams|simon property|skyworks solutions|slg|snap on|southern co|southwest airlines|black & decker|starbucks|state street|stericycle|stryker|suntrust|svb|symantec|synchrony financial|synopsys|sysco|rowe price|take-two|tapestry|target corp|te connectivty|technipfmc|texas instruments|textron|new york mellon|clorox|cooper|hershey|mosaic company|travelers company|disney|thermo fisher|tiffany & co|time warner|tjx|torchmark|tss|tractor supply|trans digm|trip advisor|century fox|tyson foods|u.s. bancorp|udr|ulta beauty|under armour|union pacific|united continental|united health|ups|united rentals|united technologies|uhs|unum group|v.f. corp|valero|varian medical|ventas|verisign|verisk analytics|verizon|vertex|viacom|visa|vornado|vulcan materials|walmart|walgreens|waste management|waters corporation|wec|wells fargo|welltower|western digital|western union|west rock|weyerhaeuser|whirlpool|williams cos|willis towers|wyndham|wynn resorts|xcel energy|xerox|xilinx|xl capital|xylem|yum brands|zimmer biomet|zions bancorp|zoetis', tweet_text))
 
 
 head(dt_tweets_copy_filter)
 nrow(dt_tweets_copy_filter)
+
+
+###############scratch area beyond this point#####################
+#keep <- which(!names(sp_constituents_csv$Name) %in% names(dt_tweets_copy$tweet_text))
+#dt_tweets_copy[, keep]
+#nrow(keep)
+#head(keep)
