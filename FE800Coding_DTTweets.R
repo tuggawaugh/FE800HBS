@@ -38,8 +38,8 @@ library(wordcloud)
 ### Create a Data Frame for DT Ttweets
 getwd()
 #setwd("C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS")
-#setwd("C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS")
-setwd("C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS")
+setwd("C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS")
+#setwd("C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS")
 
 ## read Donald Trump tweets downloaded from trumptwitterarchive.com 
 DTTweets_CSV <- read.csv("dt_tweets.csv",header = TRUE, stringsAsFactors=FALSE)
@@ -51,7 +51,9 @@ tail(DTTweets_CSV)
 
 ## check number of rows and columns
 nrow(DTTweets_CSV)
+# [1] 8030
 ncol(DTTweets_CSV)
+# [1] 16
 
 ## review columns and rename as needed
 summary(DTTweets_CSV)
@@ -74,7 +76,9 @@ head(DTTweets_CSV["timeID"])
 mode(DTTweets_CSV$timeID)
 
 ## Export CSV
-write.csv(DTTweets_CSV,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
+#write.csv(DTTweets_CSV,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
+write.csv(DTTweets_CSV,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
+
 
 ## Create a data frame with just Core data - identifiers and tweet text
 DTTweets_Core <- data.frame(time_id = DTTweets_CSV$timeID,
@@ -105,7 +109,6 @@ DTTweets_Words <- DTTweets_Core %>%
   tidytext::unnest_tokens(word, tweet_text)
 
 head(DTTweets_Words)
-
 
 ## plot the top 25 words
 DTTweets_Words %>%
@@ -257,6 +260,7 @@ sentiments
 
 ## Afinn Lexicon - assigns words with a score that runs between -5 and 5 (positive score, positive sentiment)
 get_sentiments("afinn")
+# 2477 rows
 
 get_sentiments("afinn") %>% 
   count(value)
@@ -299,7 +303,8 @@ nrow(DTTweets_Afinn)
 # THIS SHOULD FEED INTO STOCK ANALYSIS
 
 # Export the data set with Net Sentiment Score
-write.csv(DTTweets_Afinn,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Afinn.csv', row.names = FALSE)
+#write.csv(DTTweets_Afinn,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Afinn.csv', row.names = FALSE)
+write.csv(DTTweets_Afinn,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_Afinn.csv', row.names = FALSE)
 
 # Analyze the Histogram - Spread of net sentiment score for 5741 tweets
 summary(DTTweets_Afinn)
@@ -309,3 +314,42 @@ DTTweets_AfinnCount <- DTTweets_Afinn %>%
   count(net_sentiment)
 DTTweets_AfinnCount <- as.data.frame(DTTweets_AfinnCount)
 DTTweets_AfinnCount
+
+
+#############
+#make a copy of DTTweets_Core as dt_tweets_copy
+dt_tweets_copy <- DTTweets_Core
+
+nrow(dt_tweets_copy)
+# [1] 8030
+ncol(dt_tweets_copy)
+# [1] 4
+
+colnames(dt_tweets_copy)
+# [1] "time_id"    "date_time"  "tweet_text" "tweet_id"  
+
+
+## read list of 505 s&p stocks (sp_constituents) downloaded from https://github.com/datasets/s-and-p-500-companies/blob/master/data/constituents.csv 
+sp_constituents_csv <- read.csv("sp_constituents.csv",header = TRUE, stringsAsFactors=FALSE)
+
+## see first rows of the dataset and check number of rows
+head(sp_constituents_csv)
+nrow(sp_constituents_csv)
+# [1] 505
+
+ncol(sp_constituents_csv)
+# [1] 3
+
+
+#####NEEDS FIXING
+#add a column to dt_tweets_copy to flag where keyword from s&p file matches
+#dt_tweets_copy$sp_matched_tweets <- sapply(dt_tweets_copy$text, function(x) paste(grep(x, sp_constituents_csv$Name), collapse = ","))
+#dt_tweets_copy$sp_matched_tweets <- sapply(dt_tweets_copy$text, function(x) paste(grep(x, sp_constituents_csv$Name, value = TRUE), collapse = ","))
+
+
+dt_tweets_copy_filter <- filter(dt_tweets_copy,
+                           grepl('Boeing', tweet_text))
+
+
+head(dt_tweets_copy_filter)
+nrow(dt_tweets_copy_filter)
