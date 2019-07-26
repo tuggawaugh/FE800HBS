@@ -12,12 +12,12 @@ library(tidyr)
 # text mining library
 install.packages("tidytext")
 library(tidytext)
+install.packages("NLP")
+library(NLP)
 install.packages("tm")
 library(tm)
 install.packages("textdata")
 library(textdata)
-install.packages("NLP")
-library(NLP)
 # coupled words analysis
 install.packages("widyr")
 library(widyr)
@@ -37,9 +37,8 @@ library(wordcloud)
 
 ### Create a Data Frame for DT Ttweets
 getwd()
-#setwd("C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS")
-setwd("C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS")
-#setwd("C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS")
+#setwd("C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS")
+setwd("C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS")
 
 ## read Donald Trump tweets downloaded from trumptwitterarchive.com 
 DTTweets_CSV <- read.csv("dt_tweets.csv",header = TRUE, stringsAsFactors=FALSE)
@@ -127,6 +126,7 @@ DTTweets_Words %>%
 
 ## REMOVE STOP WORDS
 data("stop_words")
+nrow(stop_words)
 # how many words do you have including the stop words?
 nrow(DTTweets_Words)
 ## [1] 190499
@@ -230,36 +230,97 @@ sentiments
 
 ## Bing lexicon - categorizes words in a binary fashion into positive and negative categories
 
-# get_sentiments("bing")
-# get_sentiments("bing") %>% 
-#   count(sentiment)
-# 
-# bing_word_counts <- DTTweets_Words_clean %>%
-#   inner_join(get_sentiments("bing")) %>%
-#   count(word, sentiment, sort = TRUE) %>%
-#   ungroup()
-# 
-# bing_word_counts
-# 
-# bing_word_counts %>%
-#   group_by(sentiment) %>%
-#   top_n(10) %>%
-#   ungroup() %>%
-#   mutate(word = reorder(word, n)) %>%
-#   ggplot(aes(word, n, fill = sentiment)) +
-#   geom_col(show.legend = FALSE) +
-#   facet_wrap(~sentiment, scales = "free_y") +
-#   labs(y = "Contribution to sentiment",
-#        x = NULL) +
-#   coord_flip()
-# 
-# DTTweets_Words_clean %>%
-#   anti_join(stop_words) %>%
-#   count(word) %>%
-#   with(wordcloud(word, n, max.words = 100))
+get_sentiments("bing")
+get_sentiments("bing") %>%
+  count(sentiment)
+
+# Cross each word with Bing library and validate if the Sentiment has been assigned correctly
+bing_word_counts <- DTTweets_Words_clean %>%
+  inner_join(get_sentiments("bing"))
+bing_word_counts
+
+# Count the most common words with negative and positive Sentiment 
+bing_word_counts <- bing_word_counts %>%
+  count(word, sentiment, sort = TRUE) %>%
+  ungroup()
+bing_word_counts
+
+# Plot the top 10 positive and negative words
+bing_word_counts %>%
+  group_by(sentiment) %>%
+  top_n(10) %>%
+  ungroup() %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free_y") +
+  labs(y = "Contribution to sentiment",
+       x = NULL) +
+  coord_flip()
+
+# Create a word cloud of the most common 100 words
+DTTweets_Words_clean %>%
+  anti_join(stop_words) %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 100))
+
+bing_word_counts
+
+# Map the sentiment to each word
+bing_word_sentiment <- DTTweets_Words_clean %>%
+  inner_join(get_sentiments("bing"))
+bing_word_sentiment
+
+colnames(bing_word_sentiment)
+mode(bing_word_sentiment$time_id)
+head(bing_word_sentiment$time_id)
+bing_word_sentiment[1:10,]
+
+# Consolidate Sentiment values by Tweet using aggregate() function
+DTTweets_BingBySentiment <- bing_word_sentiment %>%
+  group_by(time_id) %>%
+  count(sentiment)
+DTTweets_BingBySentiment
+DTTweets_BingBySentiment[1:20,]
+mode(bing_word_sentiment$sentiment)
+
+# COnvert all counts for Negative sentiment to negative values by multiplying by -1
+DTTweets_BingBySentiment$n[DTTweets_BingBySentiment$sentiment == "negative"] <- DTTweets_BingBySentiment$n[DTTweets_BingBySentiment$sentiment == "negative"] * (-1)
+DTTweets_BingBySentiment[1:20,]
+
+# Rename the column from 'n' to 'count'
+names(DTTweets_BingBySentiment)[names(DTTweets_BingBySentiment) == "n"] <- "count"
+
+# Add the counts of Positive and Negative words by Tweet
+DTTweets_BingByTweet <-  DTTweets_BingBySentiment %>%
+  group_by(time_id) %>% 
+  summarise(net_sentiment = sum(count))
+DTTweets_BingByTweet
+DTTweets_BingByTweet[1:20,]
+nrow(DTTweets_BingByTweet)
+
+# Confirm all Time_ID values are unique
+DTTweets_Bing <-  DTTweets_BingByTweet %>%
+  group_by(time_id)
+nrow(DTTweets_Bing)
+
+# THIS IS THE DATA SET WITH NET SENTIMENT SCORE - USING BING - FOR EACH TWEET (TIME_ID)
+# THIS SHOULD FEED INTO STOCK ANALYSIS
+
+# Export the data set with Net Sentiment Score
+write.csv(DTTweets_Afinn,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Bing.csv', row.names = FALSE)
+# write.csv(DTTweets_Afinn,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_Afinn.csv', row.names = FALSE)
+
+# Analyze the Histogram - Spread of net sentiment score for 5128 tweets
+summary(DTTweets_Bing)
+hist(DTTweets_Bing$net_sentiment)
+
+# DTTweets_Bing <- as.data.frame(DTTweets_Bing)
+# DTTweets_Bing
 
 
-## Afinn Lexicon - assigns words with a score that runs between -5 and 5 (positive score, positive sentiment)
+
+### AFINN Lexicon - assigns words with a score that runs between -5 and 5 (positive score, positive sentiment)
 get_sentiments("afinn")
 # 2477 rows
 
@@ -300,7 +361,7 @@ DTTweets_Afinn <-  afinn_word_value %>%
 DTTweets_Afinn
 DTTweets_Afinn[1:20,]
 nrow(DTTweets_Afinn)
-# THIS IS THE DATA SET WITH NET SENTIMENT SCORE FOR EACH TWEET (TIME_ID)
+# THIS IS THE DATA SET WITH NET SENTIMENT SCORE - USING AFINN - FOR EACH TWEET (TIME_ID)
 # THIS SHOULD FEED INTO STOCK ANALYSIS
 
 # Export the data set with Net Sentiment Score
