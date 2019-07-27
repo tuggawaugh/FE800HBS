@@ -233,7 +233,6 @@ get_sentiments("bing")
 get_sentiments("bing") %>%
   count(sentiment)
 
-
 # Cross each word with Bing library and validate if the Sentiment has been assigned correctly
 bing_word_counts <- DTTweets_Words_clean %>%
   inner_join(get_sentiments("bing"))
@@ -302,21 +301,45 @@ nrow(DTTweets_BingByTweet)
 # Confirm all Time_ID values are unique
 DTTweets_Bing <-  DTTweets_BingByTweet %>%
   group_by(time_id)
+
+# Convert to data frame
+DTTweets_Bing <- as.data.frame(DTTweets_Bing)
+DTTweets_Bing
 nrow(DTTweets_Bing)
 
 # THIS IS THE DATA SET WITH NET SENTIMENT SCORE - USING BING - FOR EACH TWEET (TIME_ID)
 # THIS SHOULD FEED INTO STOCK ANALYSIS
 
 # Export the data set with Net Sentiment Score
-#write.csv(DTTweets_Bing,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Bing.csv', row.names = FALSE)
+write.csv(DTTweets_Bing,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Bing.csv', row.names = FALSE)
 # write.csv(DTTweets_Bing,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_Bing.csv', row.names = FALSE)
 
 # Analyze the Histogram - Spread of net sentiment score for 5128 tweets
 summary(DTTweets_Bing)
 hist(DTTweets_Bing$net_sentiment)
+nrow(DTTweets_Bing)
 
-# DTTweets_Bing <- as.data.frame(DTTweets_Bing)
-# DTTweets_Bing
+# rm(DTTweets_BingIndexPositive)
+# DTTweets_BingIndexPositive <- rownames(DTTweets_Bing$net_sentiment[DTTweets_Bing$net_sentiment > 0])
+# as.numeric(rownames(DTTweets_Bing$net_sentiment[DTTweets_Bing$net_sentiment > 0]))
+# as.numeric(rownames(DTTweets_Bing))
+
+
+# Filter Tweets with positive values
+DTTweets_BingPositive <- DTTweets_Bing %>%
+  filter(net_sentiment > 0) # only select rows with net POSITIVE sentiment score 
+DTTweets_BingNegative <- DTTweets_Bing %>%
+  filter(net_sentiment < 0) # only select rows with net NEGATIVE sentiment score
+nrow(DTTweets_BingPositive)
+nrow(DTTweets_BingNegative)
+DTTweets_BingNegative5 <- DTTweets_Bing %>%
+  filter(net_sentiment <= -5) # only select rows with net NEGATIVE sentiment score of 5 or lower
+
+# Review the Text of Negative Tweets 
+(DTTweets_Core$tweet_text[DTTweets_BingNegative$time_id])[1:20]
+
+# Review the Text of Tweets with Negative score of -5 or lower 
+(DTTweets_Core$tweet_text[DTTweets_BingNegative5$time_id])[1:20]
 
 
 
