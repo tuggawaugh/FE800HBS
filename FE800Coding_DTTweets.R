@@ -36,9 +36,9 @@ library(wordcloud)
 
 ### Create a Data Frame for DT Ttweets
 getwd()
-setwd("C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS")
+# setwd("C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS")
 # setwd("C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS")
-#setwd("C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS")
+setwd("C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS")
 
 ## read Donald Trump tweets downloaded from trumptwitterarchive.com 
 DTTweets_CSV <- read.csv("dt_tweets.csv",header = TRUE, stringsAsFactors=FALSE)
@@ -76,8 +76,8 @@ mode(DTTweets_CSV$timeID)
 
 ## Export CSV
 #write.csv(DTTweets_CSV,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
-write.csv(DTTweets_CSV,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
-
+#write.csv(DTTweets_CSV,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
+write.csv(DTTweets_CSV,'C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
 
 ## Create a data frame with just Core data - identifiers and tweet text
 DTTweets_Core <- data.frame(time_id = DTTweets_CSV$timeID,
@@ -115,7 +115,7 @@ DTTweets_Core <- DTTweets_Core[grepl(paste(keywords, collapse="|"), DTTweets_Cor
 head(DTTweets_Core)
 nrow(DTTweets_Core)
 
-write.csv(DTTweets_Core,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_Core.csv', row.names = FALSE)
+write.csv(DTTweets_Core,'C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS/DTTweets_Core.csv', row.names = FALSE)
 
 
 ## EXPLORE COMMON WORDS
