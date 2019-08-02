@@ -186,46 +186,46 @@ DTTweets_Words_clean %>%
 
 mode(DTTweets_Words_clean)
 
-### PAIRED WORD Analysis
-# workaround install package tm
-
-DTTweets_Pair <- DTTweets_Core %>%
-  dplyr::select(tweet_text, tweet_id, time_id, date_time) %>%
-  mutate(tweet_text = removeWords(tweet_text, stop_words$word)) %>%
-  mutate(tweet_text = gsub("\\brt\\b|\\bRT\\b", "", tweet_text)) %>%
-  mutate(tweet_text = gsub("http://*", "", tweet_text)) %>%
-  unnest_tokens(paired_words, tweet_text, token = "ngrams", n = 2)
-
-DTTweets_Pair_Counts <-DTTweets_Pair %>%
-  count(paired_words, sort = TRUE)
-
-as.data.frame(DTTweets_Pair_Counts[1:30,])
-
-## Separate Words into Columns
-DTTweets_PairSeparated <- DTTweets_Pair %>%
-  separate(paired_words, c("word1", "word2"), sep = " ")
-
-DTTweets_PairSeparated[1:30,]
-
-# new bigram counts:
-word_counts <- DTTweets_PairSeparated %>%
-  count(word1, word2, sort = TRUE)
-word_counts
-# word_counts[1:50,]
-
-# plot word network
-# fixed by manually installing igraph,ggraph then running code
-word_counts %>%
-  filter(n >= 30) %>%
-  graph_from_data_frame() %>%
-  ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = n, edge_width = n)) +
-  geom_node_point(color = "darkslategray4", size = 3) +
-  geom_node_text(aes(label = name), vjust = 1.8, size = 3) +
-  labs(title = "Word Network: Donald Trump Tweets",
-       subtitle = "Text mining twitter data ",
-       x = "", y = "") +
-  theme_void()
+# ### PAIRED WORD Analysis
+# # workaround install package tm
+# 
+# DTTweets_Pair <- DTTweets_Core %>%
+#   dplyr::select(tweet_text, tweet_id, time_id, date_time) %>%
+#   mutate(tweet_text = removeWords(tweet_text, stop_words$word)) %>%
+#   mutate(tweet_text = gsub("\\brt\\b|\\bRT\\b", "", tweet_text)) %>%
+#   mutate(tweet_text = gsub("http://*", "", tweet_text)) %>%
+#   unnest_tokens(paired_words, tweet_text, token = "ngrams", n = 2)
+# 
+# DTTweets_Pair_Counts <-DTTweets_Pair %>%
+#   count(paired_words, sort = TRUE)
+# 
+# as.data.frame(DTTweets_Pair_Counts[1:30,])
+# 
+# ## Separate Words into Columns
+# DTTweets_PairSeparated <- DTTweets_Pair %>%
+#   separate(paired_words, c("word1", "word2"), sep = " ")
+# 
+# DTTweets_PairSeparated[1:30,]
+# 
+# # new bigram counts:
+# word_counts <- DTTweets_PairSeparated %>%
+#   count(word1, word2, sort = TRUE)
+# word_counts
+# # word_counts[1:50,]
+# 
+# # plot word network
+# # fixed by manually installing igraph,ggraph then running code
+# word_counts %>%
+#   filter(n >= 30) %>%
+#   graph_from_data_frame() %>%
+#   ggraph(layout = "fr") +
+#   geom_edge_link(aes(edge_alpha = n, edge_width = n)) +
+#   geom_node_point(color = "darkslategray4", size = 3) +
+#   geom_node_text(aes(label = name), vjust = 1.8, size = 3) +
+#   labs(title = "Word Network: Donald Trump Tweets",
+#        subtitle = "Text mining twitter data ",
+#        x = "", y = "") +
+#   theme_void()
 
 
 ### Sentiment Analysis
