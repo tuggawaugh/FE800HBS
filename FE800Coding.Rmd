@@ -36,23 +36,6 @@ realDT <- read.csv("DonaldTrumpTweets.csv",header = TRUE)
 
 ```
 
-```{r}
-## see first 6 rows of the dataset
-head(realDT)
-
-## tail(realDT)
-```
-
-```{r}
-## check number of rows and columns
-nrow(realDT)
-ncol(realDT)
-```
-
-```{r}
-## check date range of tweets
-summary(realDT)
-```
 
 ```{r LOAD STOCK DATA}
 ##  Read Stock Data
@@ -240,6 +223,87 @@ dt_sumtable <- as.table(dt_sumtable)
 dt_sumtable
 ```
 
+```{r Data Preparation for Key Word Analysis}
+## CREATE SUBSETS OF THE STOCK DATA THAT REPRESENTS THE TIME FRAMES AFTER DONALD TRUMP TWEETS
+
+dtecon_overnight_ret_1_min <- subset(stockdata, dt_econ_flg == 0 & dt_econ_on_flag == 1) ## select the subset of returns that are from close of business to opening of next business day
+dtecon_ret_1_min <- subset(stockdata, dt_econ_flg == 1 & overnight_1 == 0) ## select the subset of 1 minute returns that are intraday
+dtecon_ret_2_min <- subset(stockdata, dt_econ_flg == 1 & overnight_2 == 0) ## select the subset of 2 minute returns that are intraday
+dtecon_ret_5_min <- subset(stockdata, dt_econ_flg == 1 & overnight_5 == 0) ## select the subset of 5 minute returns that are intraday
+dtecon_ret_10_min <- subset(stockdata, dt_econ_flg == 1 & overnight_10 == 0) ## select the subset of 10 minute returns that are intraday
+dtecon_ret_20_min <- subset(stockdata, dt_econ_flg == 1 & overnight_20 == 0) ## select the subset of 20 minute returns that are intraday
+dtecon_ret_30_min <- subset(stockdata, dt_econ_flg == 1 & overnight_30 == 0) ## select the subset of 30 minute returns that are intraday
+dtecon_ret_60_min <- subset(stockdata, dt_econ_flg == 1 & overnight_60 == 0) ## select the subset of 60 minute returns that are intraday
+dtecon_ret_120_min <- subset(stockdata, dt_econ_flg == 1 & overnight_120 == 0) ## select the subset of 120 minute returns that are intraday
+dtecon_ret_240_min <- subset(stockdata, dt_econ_flg == 1 & overnight_240 == 0) ## select the subset of 240 minute returns that are intraday
+dtecon_ret_360_min <- subset(stockdata, dt_econ_flg == 1 & overnight_360 == 0) ## select the subset of 360 minute returns that are intraday
+
+##  Statistics about 1, 2, 5, 10, 20, 30, 60, 120, 240, and 360-minute returns
+dtecon_max1 <- max(dtecon_ret_1_min$ret_1_min) #max return
+dtecon_min1 <- min(dtecon_ret_1_min$ret_1_min) #min return
+dtecon_mean1 <- mean(dtecon_ret_1_min$ret_1_min) #mean
+dtecon_sd1 <- sd(dtecon_ret_1_min$ret_1_min) #standard deviation
+
+dtecon_max2 <- max(dtecon_ret_2_min$ret_2_min) #max return
+dtecon_min2 <- min(dtecon_ret_2_min$ret_2_min) #min return
+dtecon_mean2 <- mean(dtecon_ret_2_min$ret_2_min) #mean
+dtecon_sd2 <- sd(dtecon_ret_2_min$ret_2_min) #standard deviation
+
+dtecon_max5 <- max(dtecon_ret_5_min$ret_5_min) #max return
+dtecon_min5 <- min(dtecon_ret_5_min$ret_5_min) #min return
+dtecon_mean5 <- mean(dtecon_ret_5_min$ret_5_min) #mean
+dtecon_sd5 <- sd(dtecon_ret_5_min$ret_5_min) #standard deviation
+
+dtecon_max10 <- max(dtecon_ret_10_min$ret_10_min) #max return
+dtecon_min10 <- min(dtecon_ret_10_min$ret_10_min) #min return
+dtecon_mean10 <- mean(dtecon_ret_10_min$ret_10_min) #mean
+dtecon_sd10 <- sd(dtecon_ret_10_min$ret_10_min) #standard deviation
+
+dtecon_max20 <- max(dtecon_ret_20_min$ret_20_min) #max return
+dtecon_min20 <- min(dtecon_ret_20_min$ret_20_min) #min return
+dtecon_mean20 <- mean(dtecon_ret_20_min$ret_20_min) #mean
+dtecon_sd20 <- sd(dtecon_ret_20_min$ret_20_min) #standard deviation
+
+dtecon_max30 <- max(dtecon_ret_30_min$ret_30_min) #max return
+dtecon_min30 <- min(dtecon_ret_30_min$ret_30_min) #min return
+dtecon_mean30 <- mean(dtecon_ret_30_min$ret_30_min) #mean
+dtecon_sd30 <- sd(dtecon_ret_30_min$ret_30_min) #standard deviation
+
+dtecon_max60 <- max(dtecon_ret_60_min$ret_60_min) #max return
+dtecon_min60 <- min(dtecon_ret_60_min$ret_60_min) #min return
+dtecon_mean60 <- mean(dtecon_ret_60_min$ret_60_min) #mean
+dtecon_sd60 <- sd(dtecon_ret_60_min$ret_60_min) #standard deviation
+
+dtecon_max120 <- max(dtecon_ret_120_min$ret_120_min) #max return
+dtecon_min120 <- min(dtecon_ret_120_min$ret_120_min) #min return
+dtecon_mean120 <- mean(dtecon_ret_120_min$ret_120_min) #mean
+dtecon_sd120 <- sd(dtecon_ret_120_min$ret_120_min) #standard deviation
+
+dtecon_max240 <- max(dtecon_ret_240_min$ret_240_min) #max return
+dtecon_min240 <- min(dtecon_ret_240_min$ret_240_min) #min return
+dtecon_mean240 <- mean(dtecon_ret_240_min$ret_240_min) #mean
+dtecon_sd240 <- sd(dtecon_ret_240_min$ret_240_min) #standard deviation
+
+dtecon_max360 <- max(dtecon_ret_360_min$ret_360_min) #max return
+dtecon_min360 <- min(dtecon_ret_360_min$ret_360_min) #min return
+dtecon_mean360 <- mean(dtecon_ret_360_min$ret_360_min) #mean
+dtecon_sd360 <- sd(dtecon_ret_360_min$ret_360_min) #standard deviation
+
+dtecon_maxon <- max(dtecon_overnight_ret_1_min$ret_1_min, na.rm=TRUE) #max return (excludes NA values)
+dtecon_minon <- min(dtecon_overnight_ret_1_min$ret_1_min, na.rm=TRUE) #min return (excludes NA values)
+dtecon_meanon <- mean(dtecon_overnight_ret_1_min$ret_1_min, na.rm=TRUE) #mean (excludes NA values)
+dtecon_sdon <- sd(dtecon_overnight_ret_1_min$ret_1_min, na.rm=TRUE) #standard deviation (excludes NA values)
+
+##  Create Summary Table
+
+dtecon_sumtable <- matrix(c(dtecon_max1, dtecon_min1, dtecon_mean1, dtecon_sd1, dtecon_max2, dtecon_min2, dtecon_mean2, dtecon_sd2, dtecon_max5, dtecon_min5, dtecon_mean5, dtecon_sd5, dtecon_max10, dtecon_min10, dtecon_mean10, dtecon_sd10, dtecon_max20, dtecon_min20, dtecon_mean20, dtecon_sd20, dtecon_max30, dtecon_min30, dtecon_mean30, dtecon_sd30, dtecon_max60, dtecon_min60, dtecon_mean60, dtecon_sd60, dtecon_max120, dtecon_min120, dtecon_mean120, dtecon_sd120, dtecon_max240, dtecon_min240, dtecon_mean240, dtecon_sd240, dtecon_max360, dtecon_min360, dtecon_mean360, dtecon_sd360, dtecon_maxon, dtecon_minon, dtecon_meanon, dtecon_sdon), ncol = 4, byrow = TRUE)
+colnames(dtecon_sumtable) <- c("Max", "Min", "Mean", "Std. Dev")
+rownames(dtecon_sumtable) <- c("1 Minute", "2 Minutes", "5 Minutes", "10 Minutes", "20 Minutes", "30 Minutes", "60 Minutes", "120 Minutes", "240 Minutes", "360 Minutes", "Overnight")
+dtecon_sumtable <- as.table(dtecon_sumtable)
+dtecon_sumtable
+
+```
+
 
 
 ```{r HISTOGRAMS}
@@ -363,4 +427,3 @@ plot(DT2$numtweets,type = "l",
      col = "Blue")
 
 ```
-
