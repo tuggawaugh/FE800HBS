@@ -1400,4 +1400,345 @@ lmRegressionOutput["ret_360_min_Afinn",]
 lmRegressionOutput <- lmRegressionOutput[complete.cases(lmRegressionOutput), ]
 lmRegressionOutput
 
+## Perform Regression Analysis on Categorical Value of overall Sentiment
+## Use only the sentiment type - Negative / Neutral / Positive - without the sentiment value
 
+colnames(DTTweets_Master)
+
+xtabs(~ Bing_Sentiment,
+      data = DTTweets_Master)
+
+xtabs(~ Afinn_Sentiment,
+      data = DTTweets_Master)
+
+
+
+cor(DTTweets_Master$overnight, DTTweets_Master$Bing_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Bing_overnight_category <- lm(DTTweets_Master$overnight ~ factor(DTTweets_Master$Bing_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_overnight_category
+summary(lmRegressionFit_Bing_overnight_category)
+summ(lmRegressionFit_Bing_overnight_category)
+
+cor(DTTweets_Master$ret_1_Min, DTTweets_Master$Bing_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Bing_ret_1_Min_category <- lm(DTTweets_Master$ret_1_Min ~ factor(DTTweets_Master$Bing_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_1_Min_category
+summary(lmRegressionFit_Bing_ret_1_Min_category)
+summ(lmRegressionFit_Bing_ret_1_Min_category)
+
+cor(DTTweets_Master$ret_2_Min, DTTweets_Master$Bing_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Bing_ret_2_Min_category <- lm(DTTweets_Master$ret_2_Min ~ factor(DTTweets_Master$Bing_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_2_Min_category
+summary(lmRegressionFit_Bing_ret_2_Min_category)
+summ(lmRegressionFit_Bing_ret_2_Min_category)
+
+cor(DTTweets_Master$ret_5_Min, DTTweets_Master$Bing_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Bing_ret_5_Min_category <- lm(DTTweets_Master$ret_5_Min ~ factor(DTTweets_Master$Bing_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_5_Min_category
+summary(lmRegressionFit_Bing_ret_5_Min_category)
+summ(lmRegressionFit_Bing_ret_5_Min_category)
+
+cor(DTTweets_Master$ret_10_Min, DTTweets_Master$Bing_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Bing_ret_10_Min_category <- lm(DTTweets_Master$ret_10_Min ~ factor(DTTweets_Master$Bing_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_10_Min_category
+summary(lmRegressionFit_Bing_ret_10_Min_category)
+summ(lmRegressionFit_Bing_ret_10_Min_category)
+
+cor(DTTweets_Master$ret_20_Min, DTTweets_Master$Bing_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Bing_ret_20_Min_category <- lm(DTTweets_Master$ret_20_Min ~ factor(DTTweets_Master$Bing_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_20_Min_category
+summary(lmRegressionFit_Bing_ret_20_Min_category)
+summ(lmRegressionFit_Bing_ret_20_Min_category)
+
+cor(DTTweets_Master$ret_30_Min, DTTweets_Master$Bing_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Bing_ret_30_Min_category <- lm(DTTweets_Master$ret_30_Min ~ factor(DTTweets_Master$Bing_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_30_Min_category
+summary(lmRegressionFit_Bing_ret_30_Min_category)
+summ(lmRegressionFit_Bing_ret_30_Min_category)
+
+cor(DTTweets_Master$ret_60_Min, DTTweets_Master$Bing_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Bing_ret_60_Min_category <- lm(DTTweets_Master$ret_60_Min ~ factor(DTTweets_Master$Bing_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_60_Min_category
+summary(lmRegressionFit_Bing_ret_60_Min_category)
+summ(lmRegressionFit_Bing_ret_60_Min_category)
+
+cor(DTTweets_Master$ret_120_Min, DTTweets_Master$Bing_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Bing_ret_120_Min_category <- lm(DTTweets_Master$ret_120_Min ~ factor(DTTweets_Master$Bing_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_120_Min_category
+summary(lmRegressionFit_Bing_ret_120_Min_category)
+summ(lmRegressionFit_Bing_ret_120_Min_category)
+
+cor(DTTweets_Master$ret_240_Min, DTTweets_Master$Bing_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Bing_ret_240_Min_category <- lm(DTTweets_Master$ret_240_Min ~ factor(DTTweets_Master$Bing_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_240_Min_category
+summary(lmRegressionFit_Bing_ret_240_Min_category)
+summ(lmRegressionFit_Bing_ret_240_Min_category)
+
+cor(DTTweets_Master$ret_360_Min, DTTweets_Master$Bing_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Bing_ret_360_Min_category <- lm(DTTweets_Master$ret_360_Min ~ factor(DTTweets_Master$Bing_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_360_Min_category
+summary(lmRegressionFit_Bing_ret_360_Min_category)
+summ(lmRegressionFit_Bing_ret_360_Min_category)
+
+cor(DTTweets_Master$overnight, DTTweets_Master$Afinn_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Afinn_overnight_category <- lm(DTTweets_Master$overnight ~ factor(DTTweets_Master$Afinn_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_overnight_category
+summary(lmRegressionFit_Afinn_overnight_category)
+summ(lmRegressionFit_Afinn_overnight_category)
+
+cor(DTTweets_Master$ret_1_Min, DTTweets_Master$Afinn_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Afinn_ret_1_Min_category <- lm(DTTweets_Master$ret_1_Min ~ factor(DTTweets_Master$Afinn_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_1_Min_category
+summary(lmRegressionFit_Afinn_ret_1_Min_category)
+summ(lmRegressionFit_Afinn_ret_1_Min_category)
+
+cor(DTTweets_Master$ret_2_Min, DTTweets_Master$Afinn_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Afinn_ret_2_Min_category <- lm(DTTweets_Master$ret_2_Min ~ factor(DTTweets_Master$Afinn_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_2_Min_category
+summary(lmRegressionFit_Afinn_ret_2_Min_category)
+summ(lmRegressionFit_Afinn_ret_2_Min_category)
+
+cor(DTTweets_Master$ret_5_Min, DTTweets_Master$Afinn_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Afinn_ret_5_Min_category <- lm(DTTweets_Master$ret_5_Min ~ factor(DTTweets_Master$Afinn_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_5_Min_category
+summary(lmRegressionFit_Afinn_ret_5_Min_category)
+summ(lmRegressionFit_Afinn_ret_5_Min_category)
+
+cor(DTTweets_Master$ret_10_Min, DTTweets_Master$Afinn_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Afinn_ret_10_Min_category <- lm(DTTweets_Master$ret_10_Min ~ factor(DTTweets_Master$Afinn_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_10_Min_category
+summary(lmRegressionFit_Afinn_ret_10_Min_category)
+summ(lmRegressionFit_Afinn_ret_10_Min_category)
+
+cor(DTTweets_Master$ret_20_Min, DTTweets_Master$Afinn_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Afinn_ret_20_Min_category <- lm(DTTweets_Master$ret_20_Min ~ factor(DTTweets_Master$Afinn_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_20_Min_category
+summary(lmRegressionFit_Afinn_ret_20_Min_category)
+summ(lmRegressionFit_Afinn_ret_20_Min_category)
+
+cor(DTTweets_Master$ret_30_Min, DTTweets_Master$Afinn_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Afinn_ret_30_Min_category <- lm(DTTweets_Master$ret_30_Min ~ factor(DTTweets_Master$Afinn_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_30_Min_category
+summary(lmRegressionFit_Afinn_ret_30_Min_category)
+summ(lmRegressionFit_Afinn_ret_30_Min_category)
+
+cor(DTTweets_Master$ret_60_Min, DTTweets_Master$Afinn_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Afinn_ret_60_Min_category <- lm(DTTweets_Master$ret_60_Min ~ factor(DTTweets_Master$Afinn_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_60_Min_category
+summary(lmRegressionFit_Afinn_ret_60_Min_category)
+summ(lmRegressionFit_Afinn_ret_60_Min_category)
+
+cor(DTTweets_Master$ret_120_Min, DTTweets_Master$Afinn_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Afinn_ret_120_Min_category <- lm(DTTweets_Master$ret_120_Min ~ factor(DTTweets_Master$Afinn_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_120_Min_category
+summary(lmRegressionFit_Afinn_ret_120_Min_category)
+summ(lmRegressionFit_Afinn_ret_120_Min_category)
+
+cor(DTTweets_Master$ret_240_Min, DTTweets_Master$Afinn_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Afinn_ret_240_Min_category <- lm(DTTweets_Master$ret_240_Min ~ factor(DTTweets_Master$Afinn_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_240_Min_category
+summary(lmRegressionFit_Afinn_ret_240_Min_category)
+summ(lmRegressionFit_Afinn_ret_240_Min_category)
+
+cor(DTTweets_Master$ret_360_Min, DTTweets_Master$Afinn_Sentiment_Factor, use = "complete.obs")
+lmRegressionFit_Afinn_ret_360_Min_category <- lm(DTTweets_Master$ret_360_Min ~ factor(DTTweets_Master$Afinn_Sentiment), na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_360_Min_category
+summary(lmRegressionFit_Afinn_ret_360_Min_category)
+summ(lmRegressionFit_Afinn_ret_360_Min_category)
+
+## Format the regression outut in a table
+# Define a new output DF
+
+lmRegressionCategoryOutput <- NULL
+lmRegressionCategoryOutput$Model <- NA
+lmRegressionCategoryOutput$Data_Points <- NA
+lmRegressionCategoryOutput$R2 <- NA
+lmRegressionCategoryOutput$Adjusted_R2 <- NA
+lmRegressionCategoryOutput$F_statistic <- NA
+lmRegressionCategoryOutput$P_Value <- NA
+lmRegressionCategoryOutput <- as.data.frame(lmRegressionCategoryOutput)
+colnames(lmRegressionCategoryOutput)
+# lmRegressionCategoryOutput[-c(1),]
+
+# Add values from lmRegression Fits to the Output table
+names(summary(lmRegressionFit_Bing_ret_1_Min_category))
+lmp(lmRegressionFit_Bing_ret_1_Min_category)
+summary(lmRegressionFit_Bing_ret_1_Min_category)
+
+lmRegressionCategoryOutput["overnight_Bing",]$Model <- "overnight_Bing_category"
+lmRegressionCategoryOutput["overnight_Bing",]$Data_Points <- lmRegressionFit_Bing_overnight_category$df.residual+2
+lmRegressionCategoryOutput["overnight_Bing",]$R2 <- summary(lmRegressionFit_Bing_overnight_category)$r.squared
+lmRegressionCategoryOutput["overnight_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_overnight_category)$adj.r.squared 
+lmRegressionCategoryOutput["overnight_Bing",]$F_statistic <- summary(lmRegressionFit_Bing_overnight_category)$fstatistic[1]
+lmRegressionCategoryOutput["overnight_Bing",]$P_Value <- lmp(lmRegressionFit_Bing_overnight_category)
+lmRegressionCategoryOutput["overnight_Bing",]
+
+lmRegressionCategoryOutput["ret_1_min_Bing",]$Model <- "ret_1_min_Bing_category"
+lmRegressionCategoryOutput["ret_1_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_1_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_1_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_1_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_1_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_1_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_1_min_Bing",]$F_statistic <- summary(lmRegressionFit_Bing_ret_1_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_1_min_Bing",]$P_Value <- lmp(lmRegressionFit_Bing_ret_1_Min_category)
+lmRegressionCategoryOutput["ret_1_min_Bing",]
+
+lmRegressionCategoryOutput["ret_2_min_Bing",]$Model <- "ret_2_min_Bing_category"
+lmRegressionCategoryOutput["ret_2_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_2_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_2_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_2_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_2_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_2_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_2_min_Bing",]$F_statistic <- summary(lmRegressionFit_Bing_ret_2_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_2_min_Bing",]$P_Value <- lmp(lmRegressionFit_Bing_ret_2_Min_category)
+lmRegressionCategoryOutput["ret_2_min_Bing",]
+
+lmRegressionCategoryOutput["ret_5_min_Bing",]$Model <- "ret_5_min_Bing_category"
+lmRegressionCategoryOutput["ret_5_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_5_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_5_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_5_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_5_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_5_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_5_min_Bing",]$F_statistic <- summary(lmRegressionFit_Bing_ret_5_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_5_min_Bing",]$P_Value <- lmp(lmRegressionFit_Bing_ret_5_Min_category)
+lmRegressionCategoryOutput["ret_5_min_Bing",]
+
+lmRegressionCategoryOutput["ret_10_min_Bing",]$Model <- "ret_10_min_Bing_category"
+lmRegressionCategoryOutput["ret_10_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_10_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_10_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_10_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_10_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_10_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_10_min_Bing",]$F_statistic <- summary(lmRegressionFit_Bing_ret_10_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_10_min_Bing",]$P_Value <- lmp(lmRegressionFit_Bing_ret_10_Min_category)
+lmRegressionCategoryOutput["ret_10_min_Bing",]
+
+lmRegressionCategoryOutput["ret_20_min_Bing",]$Model <- "ret_20_min_Bing_category"
+lmRegressionCategoryOutput["ret_20_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_20_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_20_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_20_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_20_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_20_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_20_min_Bing",]$F_statistic <- summary(lmRegressionFit_Bing_ret_20_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_20_min_Bing",]$P_Value <- lmp(lmRegressionFit_Bing_ret_20_Min_category)
+lmRegressionCategoryOutput["ret_20_min_Bing",]
+
+lmRegressionCategoryOutput["ret_30_min_Bing",]$Model <- "ret_30_min_Bing_category"
+lmRegressionCategoryOutput["ret_30_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_30_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_30_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_30_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_30_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_30_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_30_min_Bing",]$F_statistic <- summary(lmRegressionFit_Bing_ret_30_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_30_min_Bing",]$P_Value <- lmp(lmRegressionFit_Bing_ret_30_Min_category)
+lmRegressionCategoryOutput["ret_30_min_Bing",]
+
+lmRegressionCategoryOutput["ret_60_min_Bing",]$Model <- "ret_60_min_Bing_category"
+lmRegressionCategoryOutput["ret_60_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_60_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_60_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_60_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_60_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_60_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_60_min_Bing",]$F_statistic <- summary(lmRegressionFit_Bing_ret_60_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_60_min_Bing",]$P_Value <- lmp(lmRegressionFit_Bing_ret_60_Min_category)
+lmRegressionCategoryOutput["ret_60_min_Bing",]
+
+lmRegressionCategoryOutput["ret_120_min_Bing",]$Model <- "ret_120_min_Bing_category"
+lmRegressionCategoryOutput["ret_120_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_120_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_120_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_120_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_120_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_120_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_120_min_Bing",]$F_statistic <- summary(lmRegressionFit_Bing_ret_120_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_120_min_Bing",]$P_Value <- lmp(lmRegressionFit_Bing_ret_120_Min_category)
+lmRegressionCategoryOutput["ret_120_min_Bing",]
+
+lmRegressionCategoryOutput["ret_240_min_Bing",]$Model <- "ret_240_min_Bing_category"
+lmRegressionCategoryOutput["ret_240_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_240_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_240_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_240_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_240_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_240_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_240_min_Bing",]$F_statistic <- summary(lmRegressionFit_Bing_ret_240_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_240_min_Bing",]$P_Value <- lmp(lmRegressionFit_Bing_ret_240_Min_category)
+lmRegressionCategoryOutput["ret_240_min_Bing",]
+
+lmRegressionCategoryOutput["ret_360_min_Bing",]$Model <- "ret_360_min_Bing_category"
+lmRegressionCategoryOutput["ret_360_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_360_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_360_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_360_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_360_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_360_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_360_min_Bing",]$F_statistic <- summary(lmRegressionFit_Bing_ret_360_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_360_min_Bing",]$P_Value <- lmp(lmRegressionFit_Bing_ret_360_Min_category)
+lmRegressionCategoryOutput["ret_360_min_Bing",]
+
+lmRegressionCategoryOutput["overnight_Afinn",]$Model <- "overnight_Afinn_category"
+lmRegressionCategoryOutput["overnight_Afinn",]$Data_Points <- lmRegressionFit_Afinn_overnight_category$df.residual+2
+lmRegressionCategoryOutput["overnight_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_overnight_category)$r.squared
+lmRegressionCategoryOutput["overnight_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_overnight_category)$adj.r.squared 
+lmRegressionCategoryOutput["overnight_Afinn",]$F_statistic <- summary(lmRegressionFit_Afinn_overnight_category)$fstatistic[1]
+lmRegressionCategoryOutput["overnight_Afinn",]$P_Value <- lmp(lmRegressionFit_Afinn_overnight_category)
+lmRegressionCategoryOutput["overnight_Afinn",]
+
+lmRegressionCategoryOutput["ret_1_min_Afinn",]$Model <- "ret_1_min_Afinn_category"
+lmRegressionCategoryOutput["ret_1_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_1_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_1_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_1_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_1_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_1_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_1_min_Afinn",]$F_statistic <- summary(lmRegressionFit_Afinn_ret_1_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_1_min_Afinn",]$P_Value <- lmp(lmRegressionFit_Afinn_ret_1_Min_category)
+lmRegressionCategoryOutput["ret_1_min_Afinn",]
+
+lmRegressionCategoryOutput["ret_2_min_Afinn",]$Model <- "ret_2_min_Afinn_category"
+lmRegressionCategoryOutput["ret_2_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_2_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_2_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_2_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_2_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_2_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_2_min_Afinn",]$F_statistic <- summary(lmRegressionFit_Afinn_ret_2_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_2_min_Afinn",]$P_Value <- lmp(lmRegressionFit_Afinn_ret_2_Min_category)
+lmRegressionCategoryOutput["ret_2_min_Afinn",]
+
+lmRegressionCategoryOutput["ret_5_min_Afinn",]$Model <- "ret_5_min_Afinn_category"
+lmRegressionCategoryOutput["ret_5_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_5_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_5_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_5_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_5_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_5_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_5_min_Afinn",]$F_statistic <- summary(lmRegressionFit_Afinn_ret_5_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_5_min_Afinn",]$P_Value <- lmp(lmRegressionFit_Afinn_ret_5_Min_category)
+lmRegressionCategoryOutput["ret_5_min_Afinn",]
+
+lmRegressionCategoryOutput["ret_10_min_Afinn",]$Model <- "ret_10_min_Afinn_category"
+lmRegressionCategoryOutput["ret_10_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_10_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_10_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_10_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_10_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_10_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_10_min_Afinn",]$F_statistic <- summary(lmRegressionFit_Afinn_ret_10_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_10_min_Afinn",]$P_Value <- lmp(lmRegressionFit_Afinn_ret_10_Min_category)
+lmRegressionCategoryOutput["ret_10_min_Afinn",]
+
+lmRegressionCategoryOutput["ret_20_min_Afinn",]$Model <- "ret_20_min_Afinn_category"
+lmRegressionCategoryOutput["ret_20_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_20_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_20_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_20_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_20_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_20_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_20_min_Afinn",]$F_statistic <- summary(lmRegressionFit_Afinn_ret_20_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_20_min_Afinn",]$P_Value <- lmp(lmRegressionFit_Afinn_ret_20_Min_category)
+lmRegressionCategoryOutput["ret_20_min_Afinn",]
+
+lmRegressionCategoryOutput["ret_30_min_Afinn",]$Model <- "ret_30_min_Afinn_category"
+lmRegressionCategoryOutput["ret_30_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_30_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_30_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_30_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_30_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_30_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_30_min_Afinn",]$F_statistic <- summary(lmRegressionFit_Afinn_ret_30_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_30_min_Afinn",]$P_Value <- lmp(lmRegressionFit_Afinn_ret_30_Min_category)
+lmRegressionCategoryOutput["ret_30_min_Afinn",]
+
+lmRegressionCategoryOutput["ret_60_min_Afinn",]$Model <- "ret_60_min_Afinn_category"
+lmRegressionCategoryOutput["ret_60_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_60_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_60_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_60_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_60_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_60_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_60_min_Afinn",]$F_statistic <- summary(lmRegressionFit_Afinn_ret_60_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_60_min_Afinn",]$P_Value <- lmp(lmRegressionFit_Afinn_ret_60_Min_category)
+lmRegressionCategoryOutput["ret_60_min_Afinn",]
+
+lmRegressionCategoryOutput["ret_120_min_Afinn",]$Model <- "ret_120_min_Afinn_category"
+lmRegressionCategoryOutput["ret_120_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_120_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_120_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_120_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_120_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_120_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_120_min_Afinn",]$F_statistic <- summary(lmRegressionFit_Afinn_ret_120_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_120_min_Afinn",]$P_Value <- lmp(lmRegressionFit_Afinn_ret_120_Min_category)
+lmRegressionCategoryOutput["ret_120_min_Afinn",]
+
+lmRegressionCategoryOutput["ret_240_min_Afinn",]$Model <- "ret_240_min_Afinn_category"
+lmRegressionCategoryOutput["ret_240_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_240_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_240_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_240_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_240_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_240_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_240_min_Afinn",]$F_statistic <- summary(lmRegressionFit_Afinn_ret_240_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_240_min_Afinn",]$P_Value <- lmp(lmRegressionFit_Afinn_ret_240_Min_category)
+lmRegressionCategoryOutput["ret_240_min_Afinn",]
+
+lmRegressionCategoryOutput["ret_360_min_Afinn",]$Model <- "ret_360_min_Afinn_category"
+lmRegressionCategoryOutput["ret_360_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_360_Min_category$df.residual+2
+lmRegressionCategoryOutput["ret_360_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_360_Min_category)$r.squared
+lmRegressionCategoryOutput["ret_360_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_360_Min_category)$adj.r.squared 
+lmRegressionCategoryOutput["ret_360_min_Afinn",]$F_statistic <- summary(lmRegressionFit_Afinn_ret_360_Min_category)$fstatistic[1]
+lmRegressionCategoryOutput["ret_360_min_Afinn",]$P_Value <- lmp(lmRegressionFit_Afinn_ret_360_Min_category)
+lmRegressionCategoryOutput["ret_360_min_Afinn",]
+
+lmRegressionCategoryOutput <- lmRegressionCategoryOutput[complete.cases(lmRegressionCategoryOutput), ]
+lmRegressionCategoryOutput
