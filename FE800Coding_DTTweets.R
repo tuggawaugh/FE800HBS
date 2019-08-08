@@ -348,6 +348,18 @@ hist(DTTweets_Bing$normalized_sentiment)
 summary(DTTweets_Bing$normalized_sentiment)
 nrow(DTTweets_Bing)
 
+# Add Category Labels for the overall sentiment based on Net Sentiment score
+colnames(DTTweets_Bing)
+colnames(DTTweets_Bing)
+DTTweets_Bing$sentiment <- NA
+DTTweets_Bing$sentiment[DTTweets_Bing$net_sentiment < 0] = "Negative"
+DTTweets_Bing$sentiment[DTTweets_Bing$net_sentiment == 0] = "Neutral"
+DTTweets_Bing$sentiment[DTTweets_Bing$net_sentiment > 0] = "Positive"
+DTTweets_Bing$sentiment_factor = factor(DTTweets_Bing$sentiment, levels=c("Negative", "Neutral", "Positive"))
+DTTweets_Bing$sentiment_factor
+mode(DTTweets_Bing$sentiment)
+mode(DTTweets_Bing$sentiment_factor)
+
 
 # THIS IS THE DATA SET WITH NET SENTIMENT SCORE - USING BING - FOR EACH TWEET (TIME_ID)
 # THIS SHOULD FEED INTO STOCK ANALYSIS
@@ -400,6 +412,15 @@ DTTweets_Core$Bing_Net_Sentiment
 DTTweets_Core$Bing_Normalized_Sentiment <- NA
 DTTweets_Core$Bing_Normalized_Sentiment[which(DTTweets_Core$time_id %in% DTTweets_Bing$time_id)] <- DTTweets_Bing$normalized_sentiment
 DTTweets_Core$Bing_Normalized_Sentiment
+
+DTTweets_Core$Bing_Sentiment <- NA
+DTTweets_Core$Bing_Sentiment[which(DTTweets_Core$time_id %in% DTTweets_Bing$time_id)] <- DTTweets_Bing$sentiment
+DTTweets_Core$Bing_Sentiment
+
+DTTweets_Core$Bing_Sentiment_Factor <- NA
+DTTweets_Core$Bing_Sentiment_Factor[which(DTTweets_Core$time_id %in% DTTweets_Bing$time_id)] <- DTTweets_Bing$sentiment_factor
+DTTweets_Core$Bing_Sentiment_Factor
+
 
 
 
@@ -465,6 +486,19 @@ hist(DTTweets_Afinn$normalized_sentiment)
 summary(DTTweets_Afinn$normalized_sentiment)
 nrow(DTTweets_Afinn)
 
+# Add Category Labels for the overall sentiment based on Net Sentiment score
+colnames(DTTweets_Afinn)
+colnames(DTTweets_Afinn)
+DTTweets_Afinn$sentiment <- NA
+DTTweets_Afinn$sentiment[DTTweets_Afinn$net_sentiment < 0] = "Negative"
+DTTweets_Afinn$sentiment[DTTweets_Afinn$net_sentiment == 0] = "Neutral"
+DTTweets_Afinn$sentiment[DTTweets_Afinn$net_sentiment > 0] = "Positive"
+DTTweets_Afinn$sentiment_factor = factor(DTTweets_Afinn$sentiment, levels=c("Negative", "Neutral", "Positive"))
+DTTweets_Afinn$sentiment_factor
+mode(DTTweets_Afinn$sentiment)
+mode(DTTweets_Afinn$sentiment_factor)
+
+
 
 # THIS IS THE DATA SET WITH NET SENTIMENT SCORE - USING AFINN - FOR EACH TWEET (TIME_ID)
 # THIS SHOULD FEED INTO STOCK ANALYSIS
@@ -513,6 +547,16 @@ DTTweets_Core$Afinn_Net_Sentiment
 DTTweets_Core$Afinn_Normalized_Sentiment <- NA
 DTTweets_Core$Afinn_Normalized_Sentiment[which(DTTweets_Core$time_id %in% DTTweets_Afinn$time_id)] <- DTTweets_Afinn$normalized_sentiment
 DTTweets_Core$Afinn_Normalized_Sentiment
+
+DTTweets_Core$Afinn_Sentiment <- NA
+DTTweets_Core$Afinn_Sentiment[which(DTTweets_Core$time_id %in% DTTweets_Afinn$time_id)] <- DTTweets_Afinn$sentiment
+DTTweets_Core$Afinn_Sentiment
+
+DTTweets_Core$Afinn_Sentiment_Factor <- NA
+DTTweets_Core$Afinn_Sentiment_Factor[which(DTTweets_Core$time_id %in% DTTweets_Afinn$time_id)] <- DTTweets_Afinn$sentiment_factor
+DTTweets_Core$Afinn_Sentiment_Factor
+
+
 
 ## Export CSV
 write.csv(DTTweets_Core,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Core.csv', row.names = FALSE)
