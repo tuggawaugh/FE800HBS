@@ -560,6 +560,29 @@ head(stockdata)
 ##  Number of Rows in stock market data
 nrow(stockdata)
 
+## Add TimeID
+
+## Validate Minute ID
+colnames(stockdata)
+mode(stockdata$minuteid)
+head(stockdata$minuteid)
+# It is not populated correctly
+
+## Set the column width to 2 (and pad 0 upfront if single digit)
+stockdata$month <- formatC(stockdata$month, flag=0, width=2)
+stockdata$date <- formatC(stockdata$date, flag=0, width=2)
+stockdata$hour <- formatC(stockdata$hour, flag=0, width=2)
+stockdata$minute <- formatC(stockdata$minute, flag=0, width=2)
+
+## Create TimeID variable up to Minute to uniquely identify each tweet
+stockdata <- transform(stockdata,timeID=paste0(year,month,date,hour,minute))
+colnames(stockdata)
+head(stockdata["timeID"])
+mode(stockdata$timeID)
+
+
+
+
 ## SUBSET STOCK DATA
 ## CREATE SUBSETS OF THE STOCK DATA FOR DIFFERENT ANALYISS
 
@@ -913,10 +936,199 @@ plot(DT2$numtweets,type = "l",
 ## REGRESSION ANALYSIS
 ## ***************************
 
-ret_1_min$
-
+# Create a master copy of the data frame
 DTTweets_Master <- DTTweets_Core
-DTTweets_Master$Ret_1_Min <- NA
-DTTweets_Master$Ret_1_Min[which(DTTweets_Master$time_id %in% DTTweets_Afinn$time_id)] <- DTTweets_Afinn$normalized_sentiment
-DTTweets_Master$Ret_1_Min
+options(scipen = 999)
+
+## Add Returns from 1 - 360 mins as columns to the master dataframe 
+head(ret_1_min$ret_1_min)
+mode(ret_1_min$ret_1_min)
+
+mode(ret_1_min$timeID)
+head(ret_1_min$timeID)
+
+mode(DTTweets_Master$time_id)
+head(DTTweets_Master$time_id)
+
+
+DTTweets_Master$ret_1_Min <- NA
+DTTweets_Master$ret_1_Min[which(DTTweets_Master$time_id %in% ret_1_min$timeID)] <- ret_1_min$ret_1_min
+DTTweets_Master$ret_1_Min
+summary(DTTweets_Master$time_id %in% ret_1_min$timeID)
+
+
+DTTweets_Master$ret_2_Min <- NA
+DTTweets_Master$ret_2_Min[which(DTTweets_Master$time_id %in% ret_2_min$timeID)] <- ret_2_min$ret_2_min
+DTTweets_Master$ret_2_Min
+
+DTTweets_Master$ret_5_Min <- NA
+DTTweets_Master$ret_5_Min[which(DTTweets_Master$time_id %in% ret_5_min$timeID)] <- ret_5_min$ret_5_min
+DTTweets_Master$ret_5_Min
+
+DTTweets_Master$ret_10_Min <- NA
+DTTweets_Master$ret_10_Min[which(DTTweets_Master$time_id %in% ret_10_min$timeID)] <- ret_10_min$ret_10_min
+DTTweets_Master$ret_10_Min
+
+DTTweets_Master$ret_20_Min <- NA
+DTTweets_Master$ret_20_Min[which(DTTweets_Master$time_id %in% ret_20_min$timeID)] <- ret_20_min$ret_20_min
+DTTweets_Master$ret_20_Min
+
+DTTweets_Master$ret_30_Min <- NA
+DTTweets_Master$ret_30_Min[which(DTTweets_Master$time_id %in% ret_30_min$timeID)] <- ret_30_min$ret_30_min
+DTTweets_Master$ret_30_Min
+
+DTTweets_Master$ret_60_Min <- NA
+DTTweets_Master$ret_60_Min[which(DTTweets_Master$time_id %in% ret_60_min$timeID)] <- ret_60_min$ret_60_min
+DTTweets_Master$ret_60_Min
+
+DTTweets_Master$ret_120_Min <- NA
+DTTweets_Master$ret_120_Min[which(DTTweets_Master$time_id %in% ret_120_min$timeID)] <- ret_120_min$ret_120_min
+DTTweets_Master$ret_120_Min
+
+DTTweets_Master$ret_240_Min <- NA
+DTTweets_Master$ret_240_Min[which(DTTweets_Master$time_id %in% ret_240_min$timeID)] <- ret_240_min$ret_240_min
+DTTweets_Master$ret_240_Min
+
+DTTweets_Master$ret_360_Min <- NA
+DTTweets_Master$ret_360_Min[which(DTTweets_Master$time_id %in% ret_360_min$timeID)] <- ret_360_min$ret_360_min
+DTTweets_Master$ret_360_Min
+
+## Export CSV
+write.csv(DTTweets_Master,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Master.csv', row.names = FALSE)
+write.csv(ret_1_min,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/ret_1_min.csv', row.names = FALSE)
+
+
+## Perform Regression Analysis on Bing Sentiment
+
+install.packages("jtools")
+library(jtools)
+
+
+scatter.smooth(x=DTTweets_Master$Bing_Normalized_Sentiment, y=DTTweets_Master$ret_1_Min, main="Normalized Bing Sentiment ~ 1 Min Return")
+mode(DTTweets_Master$Bing_Normalized_Sentiment)
+mode(DTTweets_Master$ret_1_Min)
+summary(lm(DTTweets_Master$ret_1_Min ~ DTTweets_Master$Bing_Net_Sentiment, na.action=na.omit))
+
+cor(DTTweets_Master$ret_1_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Bing_ret_1_Min <- lm(DTTweets_Master$ret_1_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_1_Min
+summary(lmRegressionFit_Bing_ret_1_Min)
+summ(lmRegressionFit_Bing_ret_1_Min)
+
+cor(DTTweets_Master$ret_2_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Bing_ret_2_Min <- lm(DTTweets_Master$ret_2_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_2_Min
+summary(lmRegressionFit_Bing_ret_2_Min)
+summ(lmRegressionFit_Bing_ret_2_Min)
+
+cor(DTTweets_Master$ret_5_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Bing_ret_5_Min <- lm(DTTweets_Master$ret_5_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_5_Min
+summary(lmRegressionFit_Bing_ret_5_Min)
+summ(lmRegressionFit_Bing_ret_5_Min)
+
+cor(DTTweets_Master$ret_10_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Bing_ret_10_Min <- lm(DTTweets_Master$ret_10_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_10_Min
+summary(lmRegressionFit_Bing_ret_10_Min)
+summ(lmRegressionFit_Bing_ret_10_Min)
+
+cor(DTTweets_Master$ret_20_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Bing_ret_20_Min <- lm(DTTweets_Master$ret_20_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_20_Min
+summary(lmRegressionFit_Bing_ret_20_Min)
+summ(lmRegressionFit_Bing_ret_20_Min)
+
+cor(DTTweets_Master$ret_30_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Bing_ret_30_Min <- lm(DTTweets_Master$ret_30_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_30_Min
+summary(lmRegressionFit_Bing_ret_30_Min)
+summ(lmRegressionFit_Bing_ret_30_Min)
+
+cor(DTTweets_Master$ret_60_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Bing_ret_60_Min <- lm(DTTweets_Master$ret_60_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_60_Min
+summary(lmRegressionFit_Bing_ret_60_Min)
+summ(lmRegressionFit_Bing_ret_60_Min)
+
+cor(DTTweets_Master$ret_120_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Bing_ret_120_Min <- lm(DTTweets_Master$ret_120_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_120_Min
+summary(lmRegressionFit_Bing_ret_120_Min)
+summ(lmRegressionFit_Bing_ret_120_Min)
+
+cor(DTTweets_Master$ret_240_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Bing_ret_240_Min <- lm(DTTweets_Master$ret_240_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_240_Min
+summary(lmRegressionFit_Bing_ret_240_Min)
+summ(lmRegressionFit_Bing_ret_240_Min)
+
+cor(DTTweets_Master$ret_360_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Bing_ret_360_Min <- lm(DTTweets_Master$ret_360_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_ret_360_Min
+summary(lmRegressionFit_Bing_ret_360_Min)
+summ(lmRegressionFit_Bing_ret_360_Min)
+
+## Perform Regression Analysis on Afinn Sentiment
+
+cor(DTTweets_Master$ret_1_Min, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Afinn_ret_1_Min <- lm(DTTweets_Master$ret_1_Min ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_1_Min
+summary(lmRegressionFit_Afinn_ret_1_Min)
+summ(lmRegressionFit_Afinn_ret_1_Min)
+
+cor(DTTweets_Master$ret_2_Min, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Afinn_ret_2_Min <- lm(DTTweets_Master$ret_2_Min ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_2_Min
+summary(lmRegressionFit_Afinn_ret_2_Min)
+summ(lmRegressionFit_Afinn_ret_2_Min)
+
+cor(DTTweets_Master$ret_5_Min, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Afinn_ret_5_Min <- lm(DTTweets_Master$ret_5_Min ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_5_Min
+summary(lmRegressionFit_Afinn_ret_5_Min)
+summ(lmRegressionFit_Afinn_ret_5_Min)
+
+cor(DTTweets_Master$ret_10_Min, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Afinn_ret_10_Min <- lm(DTTweets_Master$ret_10_Min ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_10_Min
+summary(lmRegressionFit_Afinn_ret_10_Min)
+summ(lmRegressionFit_Afinn_ret_10_Min)
+
+cor(DTTweets_Master$ret_20_Min, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Afinn_ret_20_Min <- lm(DTTweets_Master$ret_20_Min ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_20_Min
+summary(lmRegressionFit_Afinn_ret_20_Min)
+summ(lmRegressionFit_Afinn_ret_20_Min)
+
+cor(DTTweets_Master$ret_30_Min, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Afinn_ret_30_Min <- lm(DTTweets_Master$ret_30_Min ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_30_Min
+summary(lmRegressionFit_Afinn_ret_30_Min)
+summ(lmRegressionFit_Afinn_ret_30_Min)
+
+cor(DTTweets_Master$ret_60_Min, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Afinn_ret_60_Min <- lm(DTTweets_Master$ret_60_Min ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_60_Min
+summary(lmRegressionFit_Afinn_ret_60_Min)
+summ(lmRegressionFit_Afinn_ret_60_Min)
+
+cor(DTTweets_Master$ret_120_Min, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Afinn_ret_120_Min <- lm(DTTweets_Master$ret_120_Min ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_120_Min
+summary(lmRegressionFit_Afinn_ret_120_Min)
+summ(lmRegressionFit_Afinn_ret_120_Min)
+
+cor(DTTweets_Master$ret_240_Min, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Afinn_ret_240_Min <- lm(DTTweets_Master$ret_240_Min ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_240_Min
+summary(lmRegressionFit_Afinn_ret_240_Min)
+summ(lmRegressionFit_Afinn_ret_240_Min)
+
+cor(DTTweets_Master$ret_360_Min, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Afinn_ret_360_Min <- lm(DTTweets_Master$ret_360_Min ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_ret_360_Min
+summary(lmRegressionFit_Afinn_ret_360_Min)
+summ(lmRegressionFit_Afinn_ret_360_Min)
+
 
