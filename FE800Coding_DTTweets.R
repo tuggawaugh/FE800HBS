@@ -58,8 +58,10 @@ ncol(DTTweets_CSV)
 summary(DTTweets_CSV)
 colnames(DTTweets_CSV)
 names(DTTweets_CSV)[names(DTTweets_CSV) == "ï..minuteid"] <- "minuteID"
+DTTweets_CSV$minuteID <- as.numeric(DTTweets_CSV$minuteID)
 colnames(DTTweets_CSV)
 mode(DTTweets_CSV$date)
+
 
 ## Set the column width to 2 (and pad 0 upfront if single digit)
 DTTweets_CSV$month <- formatC(DTTweets_CSV$month, flag=0, width=2)
@@ -74,13 +76,16 @@ colnames(DTTweets_CSV)
 head(DTTweets_CSV["timeID"])
 mode(DTTweets_CSV$timeID)
 
+DTTweets_CSV$minuteID == DTTweets_CSV$timeID
+
 ## Export CSV
 #write.csv(DTTweets_CSV,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
 #write.csv(DTTweets_CSV,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
 write.csv(DTTweets_CSV,'C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
 
 ## Create a data frame with just Core data - identifiers and tweet text
-DTTweets_Core <- data.frame(time_id = DTTweets_CSV$timeID,
+DTTweets_Core <- data.frame(minute_id = DTTweets_CSV$minuteID,
+                            time_id = DTTweets_CSV$timeID,
                        date_time = DTTweets_CSV$created_at,
                          tweet_text = DTTweets_CSV$text)
 is.factor(DTTweets_Core["tweet_text"])
@@ -145,7 +150,7 @@ data("stop_words")
 nrow(stop_words)
 # how many words do you have including the stop words?
 nrow(DTTweets_Words)
-## [1] 190501
+## [1] 190501 / 18270
 
 DTTweets_Words_clean <- DTTweets_Words %>%
   anti_join(stop_words) %>%
@@ -153,7 +158,7 @@ DTTweets_Words_clean <- DTTweets_Words %>%
 
 # how many words after removing the stop words?
 nrow(DTTweets_Words_clean)
-## [1] 79035
+## [1] 79035 / 8099
 
 
 # plot the top 25 words again after removing stop words
@@ -296,7 +301,7 @@ mode(bing_word_sentiment$time_id)
 head(bing_word_sentiment$time_id)
 bing_word_sentiment[1:10,]
 
-# Consolidate Sentiment values by Tweet using aggregate() function
+# Consolidate Sentiment values by Tweet using groupby() function
 DTTweets_BingBySentiment <- bing_word_sentiment %>%
   group_by(time_id) %>%
   count(sentiment)
@@ -310,6 +315,7 @@ DTTweets_BingBySentiment[1:20,]
 
 # Rename the column from 'n' to 'count'
 names(DTTweets_BingBySentiment)[names(DTTweets_BingBySentiment) == "n"] <- "count"
+colnames(DTTweets_BingBySentiment)
 
 # Add the counts of Positive and Negative words by Tweet
 DTTweets_BingByTweet <-  DTTweets_BingBySentiment %>%
@@ -328,17 +334,27 @@ DTTweets_Bing <- as.data.frame(DTTweets_Bing)
 DTTweets_Bing
 nrow(DTTweets_Bing)
 
+# Analyze the data set
+summary(DTTweets_Bing)
+hist(DTTweets_Bing$net_sentiment)
+
+# The net sentiment contains 0 and should be normalized to a postiive scale by adding 7 (lowest value is -6)
+mode(DTTweets_Bing$net_sentiment)
+DTTweets_Bing$normalized_sentiment <- DTTweets_Bing$net_sentiment + 7
+mode(DTTweets_Bing$normalized_sentiment)
+
+# Analyze the Histogram - Spread of Normalized sentiment score 
+hist(DTTweets_Bing$normalized_sentiment)
+summary(DTTweets_Bing$normalized_sentiment)
+nrow(DTTweets_Bing)
+
+
 # THIS IS THE DATA SET WITH NET SENTIMENT SCORE - USING BING - FOR EACH TWEET (TIME_ID)
 # THIS SHOULD FEED INTO STOCK ANALYSIS
 
 # Export the data set with Net Sentiment Score
 write.csv(DTTweets_Bing,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Bing.csv', row.names = FALSE)
 # write.csv(DTTweets_Bing,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_Bing.csv', row.names = FALSE)
-
-# Analyze the Histogram - Spread of net sentiment score for 5128 tweets
-summary(DTTweets_Bing)
-hist(DTTweets_Bing$net_sentiment)
-nrow(DTTweets_Bing)
 
 # rm(DTTweets_BingIndexPositive)
 # DTTweets_BingIndexPositive <- rownames(DTTweets_Bing$net_sentiment[DTTweets_Bing$net_sentiment > 0])
@@ -356,14 +372,24 @@ nrow(DTTweets_BingNegative)
 DTTweets_BingNegative5 <- DTTweets_Bing %>%
   filter(net_sentiment <= -5) # only select rows with net NEGATIVE sentiment score of 5 or lower
 
-(DTTweets_Core$tweet_text[DTTweets_BingPositive$time_id])[1:20]
+
+# Review the Text of Positive Tweets 
+
+nrow(DTTweets_Core)
+nrow(DTTweets_BingPositive)
+DTTweets_BingPositive$time_id
+mode(DTTweets_BingPositive$time_id)
+DTTweets_Core$time_id
+mode(DTTweets_Core$time_id)
+
+DTTweets_Core$tweet_text[which(DTTweets_Core$time_id %in% DTTweets_BingPositive$time_id)]
 
 
 # Review the Text of Negative Tweets 
-(DTTweets_Core$tweet_text[DTTweets_BingNegative$time_id])[1:20]
+DTTweets_Core$tweet_text[which(DTTweets_Core$time_id %in% DTTweets_BingNegative$time_id)]
 
 # Review the Text of Tweets with Negative score of -5 or lower 
-(DTTweets_Core$tweet_text[DTTweets_BingNegative5$time_id])[1:20]
+DTTweets_Core$tweet_text[which(DTTweets_Core$time_id %in% DTTweets_BingNegative5$time_id)]
 
 
 
