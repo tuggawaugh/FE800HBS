@@ -387,9 +387,19 @@ DTTweets_Core$tweet_text[which(DTTweets_Core$time_id %in% DTTweets_BingPositive$
 
 # Review the Text of Negative Tweets 
 DTTweets_Core$tweet_text[which(DTTweets_Core$time_id %in% DTTweets_BingNegative$time_id)]
+DTTweets_Core$tweet_text[which(DTTweets_Core$time_id %in% DTTweets_BingNegative$time_id)]
 
 # Review the Text of Tweets with Negative score of -5 or lower 
 DTTweets_Core$tweet_text[which(DTTweets_Core$time_id %in% DTTweets_BingNegative5$time_id)]
+
+# Add the Net and Normalized Sentiment values as columns to the DTTweets_Core Data frame 
+DTTweets_Core$Bing_Net_Sentiment <- NA
+DTTweets_Core$Bing_Net_Sentiment[which(DTTweets_Core$time_id %in% DTTweets_Bing$time_id)] <- DTTweets_Bing$net_sentiment
+DTTweets_Core$Bing_Net_Sentiment
+
+DTTweets_Core$Bing_Normalized_Sentiment <- NA
+DTTweets_Core$Bing_Normalized_Sentiment[which(DTTweets_Core$time_id %in% DTTweets_Bing$time_id)] <- DTTweets_Bing$normalized_sentiment
+DTTweets_Core$Bing_Normalized_Sentiment
 
 
 
@@ -494,6 +504,21 @@ DTTweets_Core$tweet_text[which(DTTweets_Core$time_id %in% DTTweets_AfinnNegative
 DTTweets_Core$tweet_text[which(DTTweets_Core$time_id %in% DTTweets_AfinnNegative5$time_id)]
 
 
+
+# Add the Net and Normalized Sentiment values as columns to the DTTweets_Core Data frame 
+DTTweets_Core$Afinn_Net_Sentiment <- NA
+DTTweets_Core$Afinn_Net_Sentiment[which(DTTweets_Core$time_id %in% DTTweets_Afinn$time_id)] <- DTTweets_Afinn$net_sentiment
+DTTweets_Core$Afinn_Net_Sentiment
+
+DTTweets_Core$Afinn_Normalized_Sentiment <- NA
+DTTweets_Core$Afinn_Normalized_Sentiment[which(DTTweets_Core$time_id %in% DTTweets_Afinn$time_id)] <- DTTweets_Afinn$normalized_sentiment
+DTTweets_Core$Afinn_Normalized_Sentiment
+
+## Export CSV
+write.csv(DTTweets_Core,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Core.csv', row.names = FALSE)
+
+
+
 ## *********************************
 ### DO IMPACT ANALYSIS ON STOCK RETURNS 
 ## INTEGRATE RICH's CODE
@@ -519,10 +544,10 @@ library(sqldf)
 
 ## SET WORKING DIRECTORY}
 
-getwd()
-#setwd("C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS")
-#setwd("C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS")
-setwd("C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS")
+# getwd()
+# setwd("C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS")
+# setwd("C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS")
+# setwd("C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS")
 
 ## read Donald Trump tweets downloaded from trumptwitterarchive.com 
 realDT <- read.csv("DonaldTrumpTweets.csv",header = TRUE)
@@ -882,4 +907,16 @@ plot(DT2$numtweets,type = "l",
      xlab = "Day", 
      ylab = "Number of Tweets", 
      col = "Blue")
+
+
+## ***************************
+## REGRESSION ANALYSIS
+## ***************************
+
+ret_1_min$
+
+DTTweets_Master <- DTTweets_Core
+DTTweets_Master$Ret_1_Min <- NA
+DTTweets_Master$Ret_1_Min[which(DTTweets_Master$time_id %in% DTTweets_Afinn$time_id)] <- DTTweets_Afinn$normalized_sentiment
+DTTweets_Master$Ret_1_Min
 
