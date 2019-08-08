@@ -434,14 +434,8 @@ DTTweets_Afinn <-  afinn_word_value %>%
 DTTweets_Afinn
 DTTweets_Afinn[1:20,]
 nrow(DTTweets_Afinn)
-# THIS IS THE DATA SET WITH NET SENTIMENT SCORE - USING AFINN - FOR EACH TWEET (TIME_ID)
-# THIS SHOULD FEED INTO STOCK ANALYSIS
 
-# Export the data set with Net Sentiment Score
-#write.csv(DTTweets_Afinn,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Afinn.csv', row.names = FALSE)
-write.csv(DTTweets_Afinn,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_Afinn.csv', row.names = FALSE)
-
-# Analyze the Histogram - Spread of net sentiment score for 5741 tweets
+# Analyze the Histogram - Spread of net sentiment score 
 summary(DTTweets_Afinn)
 hist(DTTweets_Afinn$net_sentiment)
 
@@ -449,5 +443,55 @@ DTTweets_AfinnCount <- DTTweets_Afinn %>%
   count(net_sentiment)
 DTTweets_AfinnCount <- as.data.frame(DTTweets_AfinnCount)
 DTTweets_AfinnCount
+
+
+# The net sentiment contains 0 and should be normalized to a postiive scale by adding 15 (lowest value is -14)
+mode(DTTweets_Afinn$net_sentiment)
+DTTweets_Afinn$normalized_sentiment <- DTTweets_Afinn$net_sentiment + 15
+mode(DTTweets_Afinn$normalized_sentiment)
+
+# Analyze the Histogram - Spread of Normalized sentiment score 
+hist(DTTweets_Afinn$normalized_sentiment)
+summary(DTTweets_Afinn$normalized_sentiment)
+nrow(DTTweets_Afinn)
+
+
+# THIS IS THE DATA SET WITH NET SENTIMENT SCORE - USING AFINN - FOR EACH TWEET (TIME_ID)
+# THIS SHOULD FEED INTO STOCK ANALYSIS
+
+# Export the data set with Net Sentiment Score
+# write.csv(DTTweets_Afinn,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Afinn.csv', row.names = FALSE)
+write.csv(DTTweets_Afinn,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_Afinn.csv', row.names = FALSE)
+
+
+# Filter Tweets with positive values
+DTTweets_AfinnPositive <- DTTweets_Afinn %>%
+  filter(net_sentiment > 0) # only select rows with net POSITIVE sentiment score 
+DTTweets_AfinnNegative <- DTTweets_Afinn %>%
+  filter(net_sentiment < 0) # only select rows with net NEGATIVE sentiment score
+nrow(DTTweets_AfinnPositive)
+nrow(DTTweets_AfinnNegative)
+DTTweets_AfinnNegative5 <- DTTweets_Afinn %>%
+  filter(net_sentiment <= -5) # only select rows with net NEGATIVE sentiment score of 5 or lower
+
+
+# Review the Text of Positive Tweets 
+
+nrow(DTTweets_Core)
+nrow(DTTweets_AfinnPositive)
+DTTweets_AfinnPositive$time_id
+mode(DTTweets_AfinnPositive$time_id)
+DTTweets_Core$time_id
+mode(DTTweets_Core$time_id)
+
+DTTweets_Core$tweet_text[which(DTTweets_Core$time_id %in% DTTweets_AfinnPositive$time_id)]
+
+
+# Review the Text of Negative Tweets 
+DTTweets_Core$tweet_text[which(DTTweets_Core$time_id %in% DTTweets_AfinnNegative$time_id)]
+
+# Review the Text of Tweets with Negative score of -5 or lower 
+DTTweets_Core$tweet_text[which(DTTweets_Core$time_id %in% DTTweets_AfinnNegative5$time_id)]
+
 
 
