@@ -951,6 +951,11 @@ mode(DTTweets_Master$time_id)
 head(DTTweets_Master$time_id)
 
 
+DTTweets_Master$overnight <- NA
+DTTweets_Master$overnight[which(DTTweets_Master$time_id %in% ret_1_min$timeID)] <- overnight_ret_1_min$ret_1_min
+DTTweets_Master$overnight
+
+
 DTTweets_Master$ret_1_Min <- NA
 DTTweets_Master$ret_1_Min[which(DTTweets_Master$time_id %in% ret_1_min$timeID)] <- ret_1_min$ret_1_min
 DTTweets_Master$ret_1_Min
@@ -995,7 +1000,7 @@ DTTweets_Master$ret_360_Min
 
 ## Export CSV
 write.csv(DTTweets_Master,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Master.csv', row.names = FALSE)
-write.csv(ret_1_min,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/ret_1_min.csv', row.names = FALSE)
+# write.csv(ret_1_min,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/ret_1_min.csv', row.names = FALSE)
 
 
 ## Perform Regression Analysis on Bing Sentiment
@@ -1008,6 +1013,12 @@ scatter.smooth(x=DTTweets_Master$Bing_Normalized_Sentiment, y=DTTweets_Master$re
 mode(DTTweets_Master$Bing_Normalized_Sentiment)
 mode(DTTweets_Master$ret_1_Min)
 summary(lm(DTTweets_Master$ret_1_Min ~ DTTweets_Master$Bing_Net_Sentiment, na.action=na.omit))
+
+cor(DTTweets_Master$overnight, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Bing_overnight <- lm(DTTweets_Master$overnight ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Bing_overnight
+summary(lmRegressionFit_Bing_overnight)
+summ(lmRegressionFit_Bing_overnight)
 
 cor(DTTweets_Master$ret_1_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
 lmRegressionFit_Bing_ret_1_Min <- lm(DTTweets_Master$ret_1_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
@@ -1070,6 +1081,12 @@ summary(lmRegressionFit_Bing_ret_360_Min)
 summ(lmRegressionFit_Bing_ret_360_Min)
 
 ## Perform Regression Analysis on Afinn Sentiment
+
+cor(DTTweets_Master$overnight, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
+lmRegressionFit_Afinn_overnight <- lm(DTTweets_Master$overnight ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
+lmRegressionFit_Afinn_overnight
+summary(lmRegressionFit_Afinn_overnight)
+summ(lmRegressionFit_Afinn_overnight)
 
 cor(DTTweets_Master$ret_1_Min, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
 lmRegressionFit_Afinn_ret_1_Min <- lm(DTTweets_Master$ret_1_Min ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
@@ -1144,177 +1161,6 @@ lmp <- function (modelobject) {
   return(p)
 }
 
-lmRegressionOutput <- data.frame()
-# lmRegressionOutput <- data.frame("Model", "Data_Points", "R2", "Adjusted_R2", "F_Statistic", "P_value")
-
-lmRegressionOutput$Model <- as.character()
-lmRegressionOutput$Data_Points <- as.numeric()
-lmRegressionOutput$R2 <- as.numeric()
-lmRegressionOutput$Adjusted_R2 <- as.numeric()
-lmRegressionOutput$F_Statistic <- as.numeric()
-lmRegressionOutput$P_value <- as.numeric()
-colnames(lmRegressionOutput)
-lmRegressionOutput
-
-lmRegressionOutput["ret_1_min_Bing",]$Model <- "ret_1_min_Bing"
-lmRegressionOutput["ret_1_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_1_Min$df.residual + 2
-lmRegressionOutput["ret_1_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_1_Min)$r.squared
-lmRegressionOutput["ret_1_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_1_Min)$adj.r.squared
-lmRegressionOutput["ret_1_min_Bing",]$F_Statistic <- summary(lmRegressionFit_Bing_ret_1_Min)$fstatistic[1]
-lmRegressionOutput["ret_1_min_Bing",]$P_value <- lmp(lmRegressionFit_Bing_ret_1_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_2_min_Bing",]$Model <- "ret_2_min_Bing"
-lmRegressionOutput["ret_2_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_2_Min$df.residual + 2
-lmRegressionOutput["ret_2_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_2_Min)$r.squared
-lmRegressionOutput["ret_2_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_2_Min)$adj.r.squared
-lmRegressionOutput["ret_2_min_Bing",]$F_Statistic <- summary(lmRegressionFit_Bing_ret_2_Min)$fstatistic[1]
-lmRegressionOutput["ret_2_min_Bing",]$P_value <- lmp(lmRegressionFit_Bing_ret_2_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_5_min_Bing",]$Model <- "ret_5_min_Bing"
-lmRegressionOutput["ret_5_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_5_Min$df.residual + 2
-lmRegressionOutput["ret_5_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_5_Min)$r.squared
-lmRegressionOutput["ret_5_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_5_Min)$adj.r.squared
-lmRegressionOutput["ret_5_min_Bing",]$F_Statistic <- summary(lmRegressionFit_Bing_ret_5_Min)$fstatistic[1]
-lmRegressionOutput["ret_5_min_Bing",]$P_value <- lmp(lmRegressionFit_Bing_ret_5_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_10_min_Bing",]$Model <- "ret_10_min_Bing"
-lmRegressionOutput["ret_10_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_10_Min$df.residual + 2
-lmRegressionOutput["ret_10_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_10_Min)$r.squared
-lmRegressionOutput["ret_10_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_10_Min)$adj.r.squared
-lmRegressionOutput["ret_10_min_Bing",]$F_Statistic <- summary(lmRegressionFit_Bing_ret_10_Min)$fstatistic[1]
-lmRegressionOutput["ret_10_min_Bing",]$P_value <- lmp(lmRegressionFit_Bing_ret_10_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_20_min_Bing",]$Model <- "ret_20_min_Bing"
-lmRegressionOutput["ret_20_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_20_Min$df.residual + 2
-lmRegressionOutput["ret_20_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_20_Min)$r.squared
-lmRegressionOutput["ret_20_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_20_Min)$adj.r.squared
-lmRegressionOutput["ret_20_min_Bing",]$F_Statistic <- summary(lmRegressionFit_Bing_ret_20_Min)$fstatistic[1]
-lmRegressionOutput["ret_20_min_Bing",]$P_value <- lmp(lmRegressionFit_Bing_ret_20_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_30_min_Bing",]$Model <- "ret_30_min_Bing"
-lmRegressionOutput["ret_30_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_30_Min$df.residual + 2
-lmRegressionOutput["ret_30_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_30_Min)$r.squared
-lmRegressionOutput["ret_30_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_30_Min)$adj.r.squared
-lmRegressionOutput["ret_30_min_Bing",]$F_Statistic <- summary(lmRegressionFit_Bing_ret_30_Min)$fstatistic[1]
-lmRegressionOutput["ret_30_min_Bing",]$P_value <- lmp(lmRegressionFit_Bing_ret_30_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_60_min_Bing",]$Model <- "ret_60_min_Bing"
-lmRegressionOutput["ret_60_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_60_Min$df.residual + 2
-lmRegressionOutput["ret_60_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_60_Min)$r.squared
-lmRegressionOutput["ret_60_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_60_Min)$adj.r.squared
-lmRegressionOutput["ret_60_min_Bing",]$F_Statistic <- summary(lmRegressionFit_Bing_ret_60_Min)$fstatistic[1]
-lmRegressionOutput["ret_60_min_Bing",]$P_value <- lmp(lmRegressionFit_Bing_ret_60_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_120_min_Bing",]$Model <- "ret_120_min_Bing"
-lmRegressionOutput["ret_120_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_120_Min$df.residual + 2
-lmRegressionOutput["ret_120_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_120_Min)$r.squared
-lmRegressionOutput["ret_120_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_120_Min)$adj.r.squared
-lmRegressionOutput["ret_120_min_Bing",]$F_Statistic <- summary(lmRegressionFit_Bing_ret_120_Min)$fstatistic[1]
-lmRegressionOutput["ret_120_min_Bing",]$P_value <- lmp(lmRegressionFit_Bing_ret_120_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_240_min_Bing",]$Model <- "ret_240_min_Bing"
-lmRegressionOutput["ret_240_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_240_Min$df.residual + 2
-lmRegressionOutput["ret_240_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_240_Min)$r.squared
-lmRegressionOutput["ret_240_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_240_Min)$adj.r.squared
-lmRegressionOutput["ret_240_min_Bing",]$F_Statistic <- summary(lmRegressionFit_Bing_ret_240_Min)$fstatistic[1]
-lmRegressionOutput["ret_240_min_Bing",]$P_value <- lmp(lmRegressionFit_Bing_ret_240_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_360_min_Bing",]$Model <- "ret_360_min_Bing"
-lmRegressionOutput["ret_360_min_Bing",]$Data_Points <- lmRegressionFit_Bing_ret_360_Min$df.residual + 2
-lmRegressionOutput["ret_360_min_Bing",]$R2 <- summary(lmRegressionFit_Bing_ret_360_Min)$r.squared
-lmRegressionOutput["ret_360_min_Bing",]$Adjusted_R2 <- summary(lmRegressionFit_Bing_ret_360_Min)$adj.r.squared
-lmRegressionOutput["ret_360_min_Bing",]$F_Statistic <- summary(lmRegressionFit_Bing_ret_360_Min)$fstatistic[1]
-lmRegressionOutput["ret_360_min_Bing",]$P_value <- lmp(lmRegressionFit_Bing_ret_360_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_1_min_Afinn",]$Model <- "ret_1_min_Afinn"
-lmRegressionOutput["ret_1_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_1_Min$df.residual + 2
-lmRegressionOutput["ret_1_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_1_Min)$r.squared
-lmRegressionOutput["ret_1_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_1_Min)$adj.r.squared
-lmRegressionOutput["ret_1_min_Afinn",]$F_Statistic <- summary(lmRegressionFit_Afinn_ret_1_Min)$fstatistic[1]
-lmRegressionOutput["ret_1_min_Afinn",]$P_value <- lmp(lmRegressionFit_Afinn_ret_1_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_2_min_Afinn",]$Model <- "ret_2_min_Afinn"
-lmRegressionOutput["ret_2_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_2_Min$df.residual + 2
-lmRegressionOutput["ret_2_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_2_Min)$r.squared
-lmRegressionOutput["ret_2_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_2_Min)$adj.r.squared
-lmRegressionOutput["ret_2_min_Afinn",]$F_Statistic <- summary(lmRegressionFit_Afinn_ret_2_Min)$fstatistic[1]
-lmRegressionOutput["ret_2_min_Afinn",]$P_value <- lmp(lmRegressionFit_Afinn_ret_2_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_5_min_Afinn",]$Model <- "ret_5_min_Afinn"
-lmRegressionOutput["ret_5_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_5_Min$df.residual + 2
-lmRegressionOutput["ret_5_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_5_Min)$r.squared
-lmRegressionOutput["ret_5_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_5_Min)$adj.r.squared
-lmRegressionOutput["ret_5_min_Afinn",]$F_Statistic <- summary(lmRegressionFit_Afinn_ret_5_Min)$fstatistic[1]
-lmRegressionOutput["ret_5_min_Afinn",]$P_value <- lmp(lmRegressionFit_Afinn_ret_5_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_10_min_Afinn",]$Model <- "ret_10_min_Afinn"
-lmRegressionOutput["ret_10_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_10_Min$df.residual + 2
-lmRegressionOutput["ret_10_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_10_Min)$r.squared
-lmRegressionOutput["ret_10_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_10_Min)$adj.r.squared
-lmRegressionOutput["ret_10_min_Afinn",]$F_Statistic <- summary(lmRegressionFit_Afinn_ret_10_Min)$fstatistic[1]
-lmRegressionOutput["ret_10_min_Afinn",]$P_value <- lmp(lmRegressionFit_Afinn_ret_10_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_20_min_Afinn",]$Model <- "ret_20_min_Afinn"
-lmRegressionOutput["ret_20_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_20_Min$df.residual + 2
-lmRegressionOutput["ret_20_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_20_Min)$r.squared
-lmRegressionOutput["ret_20_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_20_Min)$adj.r.squared
-lmRegressionOutput["ret_20_min_Afinn",]$F_Statistic <- summary(lmRegressionFit_Afinn_ret_20_Min)$fstatistic[1]
-lmRegressionOutput["ret_20_min_Afinn",]$P_value <- lmp(lmRegressionFit_Afinn_ret_20_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_30_min_Afinn",]$Model <- "ret_30_min_Afinn"
-lmRegressionOutput["ret_30_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_30_Min$df.residual + 2
-lmRegressionOutput["ret_30_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_30_Min)$r.squared
-lmRegressionOutput["ret_30_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_30_Min)$adj.r.squared
-lmRegressionOutput["ret_30_min_Afinn",]$F_Statistic <- summary(lmRegressionFit_Afinn_ret_30_Min)$fstatistic[1]
-lmRegressionOutput["ret_30_min_Afinn",]$P_value <- lmp(lmRegressionFit_Afinn_ret_30_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_60_min_Afinn",]$Model <- "ret_60_min_Afinn"
-lmRegressionOutput["ret_60_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_60_Min$df.residual + 2
-lmRegressionOutput["ret_60_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_60_Min)$r.squared
-lmRegressionOutput["ret_60_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_60_Min)$adj.r.squared
-lmRegressionOutput["ret_60_min_Afinn",]$F_Statistic <- summary(lmRegressionFit_Afinn_ret_60_Min)$fstatistic[1]
-lmRegressionOutput["ret_60_min_Afinn",]$P_value <- lmp(lmRegressionFit_Afinn_ret_60_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_120_min_Afinn",]$Model <- "ret_120_min_Afinn"
-lmRegressionOutput["ret_120_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_120_Min$df.residual + 2
-lmRegressionOutput["ret_120_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_120_Min)$r.squared
-lmRegressionOutput["ret_120_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_120_Min)$adj.r.squared
-lmRegressionOutput["ret_120_min_Afinn",]$F_Statistic <- summary(lmRegressionFit_Afinn_ret_120_Min)$fstatistic[1]
-lmRegressionOutput["ret_120_min_Afinn",]$P_value <- lmp(lmRegressionFit_Afinn_ret_120_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_240_min_Afinn",]$Model <- "ret_240_min_Afinn"
-lmRegressionOutput["ret_240_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_240_Min$df.residual + 2
-lmRegressionOutput["ret_240_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_240_Min)$r.squared
-lmRegressionOutput["ret_240_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_240_Min)$adj.r.squared
-lmRegressionOutput["ret_240_min_Afinn",]$F_Statistic <- summary(lmRegressionFit_Afinn_ret_240_Min)$fstatistic[1]
-lmRegressionOutput["ret_240_min_Afinn",]$P_value <- lmp(lmRegressionFit_Afinn_ret_240_Min)
-lmRegressionOutput
-
-lmRegressionOutput["ret_360_min_Afinn",]$Model <- "ret_360_min_Afinn"
-lmRegressionOutput["ret_360_min_Afinn",]$Data_Points <- lmRegressionFit_Afinn_ret_360_Min$df.residual + 2
-lmRegressionOutput["ret_360_min_Afinn",]$R2 <- summary(lmRegressionFit_Afinn_ret_360_Min)$r.squared
-lmRegressionOutput["ret_360_min_Afinn",]$Adjusted_R2 <- summary(lmRegressionFit_Afinn_ret_360_Min)$adj.r.squared
-lmRegressionOutput["ret_360_min_Afinn",]$F_Statistic <- summary(lmRegressionFit_Afinn_ret_360_Min)$fstatistic[1]
-lmRegressionOutput["ret_360_min_Afinn",]$P_value <- lmp(lmRegressionFit_Afinn_ret_360_Min)
-lmRegressionOutput
 
 
 
