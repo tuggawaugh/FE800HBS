@@ -356,6 +356,9 @@ nrow(DTTweets_BingNegative)
 DTTweets_BingNegative5 <- DTTweets_Bing %>%
   filter(net_sentiment <= -5) # only select rows with net NEGATIVE sentiment score of 5 or lower
 
+(DTTweets_Core$tweet_text[DTTweets_BingPositive$time_id])[1:20]
+
+
 # Review the Text of Negative Tweets 
 (DTTweets_Core$tweet_text[DTTweets_BingNegative$time_id])[1:20]
 

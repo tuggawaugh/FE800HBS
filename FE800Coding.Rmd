@@ -16,12 +16,20 @@ When you save the notebook, an HTML file containing the code and output will be 
 install.packages("sm")
 install.packages("ggplot2")
 install.packages("sqldf")
-
+# install.packages("gsubfn")
+# install.packages("proto")
+# install.packages("RSQLite")
+# install.packages("blob")
+# library(blob)
 
 ##  INSTALL LIBRARIES
 library(sm)
 library(ggplot2)
 library(sqldf)
+# library(gsubfn)
+# library(proto)
+# library(RSQLite)
+
 ```
 
 
