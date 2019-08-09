@@ -336,7 +336,11 @@ nrow(DTTweets_Bing)
 
 # Analyze the data set
 summary(DTTweets_Bing)
-hist(DTTweets_Bing$net_sentiment)
+# hist(DTTweets_Bing$net_sentiment)
+histinfoBing <- hist(DTTweets_Bing$net_sentiment,
+                      main="Histogram of DT Tweets with Bing Sentiment Value", 
+                      xlab="Bing Sentiment Score",  breaks = 15)
+histinfoBing
 
 # The net sentiment contains 0 and should be normalized to a postiive scale by adding 7 (lowest value is -6)
 mode(DTTweets_Bing$net_sentiment)
@@ -431,6 +435,7 @@ get_sentiments("afinn")
 get_sentiments("afinn") %>% 
   count(value)
 
+
 # Calculate the count of words with sentiment score
 afinn_word_counts <- DTTweets_Words_clean %>%
   inner_join(get_sentiments("afinn")) %>%
@@ -451,6 +456,29 @@ mode(afinn_word_value$time_id)
 head(afinn_word_value$time_id)
 afinn_word_value[1:10,]
 
+
+# Plot the top 10 positive and negative words
+afinn_word_counts %>%
+  group_by(value) %>%
+  top_n(10) %>%
+  ungroup() %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = value)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~value, scales = "free_y") +
+  labs(y = "Contribution to value",
+       x = NULL) +
+  coord_flip()
+
+# Create a word cloud of the most common 100 words
+DTTweets_Words_clean %>%
+  anti_join(stop_words) %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 100))
+
+
+
+
 # Consolidate Sentiment values by Tweet using aggregate() function
 DTTweets_AfinnValues <- aggregate(value ~ time_id, afinn_word_value, sum)
 head(DTTweets_AfinnValues)
@@ -468,7 +496,13 @@ nrow(DTTweets_Afinn)
 
 # Analyze the Histogram - Spread of net sentiment score 
 summary(DTTweets_Afinn)
-hist(DTTweets_Afinn$net_sentiment)
+histinfoAfinn <- hist(DTTweets_Afinn$net_sentiment,
+                 main="Histogram of DT Tweets with Afinn Sentiment Score", 
+                 xlab="Afinn Sentiment Value",  breaks = 30)
+# curve(dnorm(x, mean=mean(DTTweets_Afinn$net_sentiment), sd=sd(DTTweets_Afinn$net_sentiment)), add=TRUE, col="red", lwd=2)                  
+histinfoAfinn
+
+
 
 DTTweets_AfinnCount <- DTTweets_Afinn %>% 
   count(net_sentiment)
@@ -1053,7 +1087,7 @@ install.packages("jtools")
 library(jtools)
 
 
-scatter.smooth(x=DTTweets_Master$Bing_Normalized_Sentiment, y=DTTweets_Master$ret_1_Min, main="Normalized Bing Sentiment ~ 1 Min Return")
+scatter.smooth(x=DTTweets_Master$Bing_Normalized_Sentiment, y=DTTweets_Master$ret_1_Min, main="Normalized Bing Sentiment ~ 1 Min Return", xlab = "Normalized Bing Sentiment Score", ylab = "1-Min Returns")
 mode(DTTweets_Master$Bing_Normalized_Sentiment)
 mode(DTTweets_Master$ret_1_Min)
 summary(lm(DTTweets_Master$ret_1_Min ~ DTTweets_Master$Bing_Net_Sentiment, na.action=na.omit))
@@ -1070,6 +1104,7 @@ lmRegressionFit_Bing_ret_1_Min
 summary(lmRegressionFit_Bing_ret_1_Min)
 summ(lmRegressionFit_Bing_ret_1_Min)
 
+scatter.smooth(x=DTTweets_Master$Bing_Normalized_Sentiment, y=DTTweets_Master$ret_2_Min, main="Normalized Bing Sentiment ~ 2 Min Return", xlab = "Normalized Bing Sentiment Score", ylab = "2 Min Returns")
 cor(DTTweets_Master$ret_2_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
 lmRegressionFit_Bing_ret_2_Min <- lm(DTTweets_Master$ret_2_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
 lmRegressionFit_Bing_ret_2_Min
@@ -1106,18 +1141,21 @@ lmRegressionFit_Bing_ret_60_Min
 summary(lmRegressionFit_Bing_ret_60_Min)
 summ(lmRegressionFit_Bing_ret_60_Min)
 
+scatter.smooth(x=DTTweets_Master$Bing_Normalized_Sentiment, y=DTTweets_Master$ret_120_Min, main="Normalized Bing Sentiment ~ 120 Min Return", xlab = "Normalized Bing Sentiment Score", ylab = "120 Min Returns")
 cor(DTTweets_Master$ret_120_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
 lmRegressionFit_Bing_ret_120_Min <- lm(DTTweets_Master$ret_120_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
 lmRegressionFit_Bing_ret_120_Min
 summary(lmRegressionFit_Bing_ret_120_Min)
 summ(lmRegressionFit_Bing_ret_120_Min)
 
+scatter.smooth(x=DTTweets_Master$Bing_Normalized_Sentiment, y=DTTweets_Master$ret_240_Min, main="Normalized Bing Sentiment ~ 240 Min Return", xlab = "Normalized Bing Sentiment Score", ylab = "240 Min Returns")
 cor(DTTweets_Master$ret_240_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
 lmRegressionFit_Bing_ret_240_Min <- lm(DTTweets_Master$ret_240_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
 lmRegressionFit_Bing_ret_240_Min
 summary(lmRegressionFit_Bing_ret_240_Min)
 summ(lmRegressionFit_Bing_ret_240_Min)
 
+scatter.smooth(x=DTTweets_Master$Bing_Normalized_Sentiment, y=DTTweets_Master$ret_360_Min, main="Normalized Bing Sentiment ~ 360 Min Return", xlab = "Normalized Bing Sentiment Score", ylab = "360 Min Returns")
 cor(DTTweets_Master$ret_360_Min, DTTweets_Master$Bing_Normalized_Sentiment, use = "complete.obs")
 lmRegressionFit_Bing_ret_360_Min <- lm(DTTweets_Master$ret_360_Min ~ DTTweets_Master$Bing_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
 lmRegressionFit_Bing_ret_360_Min
@@ -1126,18 +1164,21 @@ summ(lmRegressionFit_Bing_ret_360_Min)
 
 ## Perform Regression Analysis on Afinn Sentiment
 
+scatter.smooth(x=DTTweets_Master$Afinn_Normalized_Sentiment, y=DTTweets_Master$overnight, main="Normalized Afinn Sentiment ~ Overnight Min Return", xlab = "Normalized Afinn Sentiment Score", ylab = "Overnight Returns")
 cor(DTTweets_Master$overnight, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
 lmRegressionFit_Afinn_overnight <- lm(DTTweets_Master$overnight ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
 lmRegressionFit_Afinn_overnight
 summary(lmRegressionFit_Afinn_overnight)
 summ(lmRegressionFit_Afinn_overnight)
 
+scatter.smooth(x=DTTweets_Master$Afinn_Normalized_Sentiment, y=DTTweets_Master$ret_1_Min, main="Normalized Afinn Sentiment ~ 1 Min Return", xlab = "Normalized Afinn Sentiment Score", ylab = "1 Min Returns")
 cor(DTTweets_Master$ret_1_Min, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
 lmRegressionFit_Afinn_ret_1_Min <- lm(DTTweets_Master$ret_1_Min ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
 lmRegressionFit_Afinn_ret_1_Min
 summary(lmRegressionFit_Afinn_ret_1_Min)
 summ(lmRegressionFit_Afinn_ret_1_Min)
 
+scatter.smooth(x=DTTweets_Master$Afinn_Normalized_Sentiment, y=DTTweets_Master$ret_2_Min, main="Normalized Afinn Sentiment ~ 2 Min Return", xlab = "Normalized Afinn Sentiment Score", ylab = "2 Min Returns")
 cor(DTTweets_Master$ret_2_Min, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
 lmRegressionFit_Afinn_ret_2_Min <- lm(DTTweets_Master$ret_2_Min ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
 lmRegressionFit_Afinn_ret_2_Min
@@ -1168,6 +1209,7 @@ lmRegressionFit_Afinn_ret_30_Min
 summary(lmRegressionFit_Afinn_ret_30_Min)
 summ(lmRegressionFit_Afinn_ret_30_Min)
 
+scatter.smooth(x=DTTweets_Master$Afinn_Normalized_Sentiment, y=DTTweets_Master$ret_60_Min, main="Normalized Afinn Sentiment ~ 60 Min Return", xlab = "Normalized Afinn Sentiment Score", ylab = "60 Min Returns")
 cor(DTTweets_Master$ret_60_Min, DTTweets_Master$Afinn_Normalized_Sentiment, use = "complete.obs")
 lmRegressionFit_Afinn_ret_60_Min <- lm(DTTweets_Master$ret_60_Min ~ DTTweets_Master$Afinn_Normalized_Sentiment, na.action=na.omit)     # fit with na.omit
 lmRegressionFit_Afinn_ret_60_Min
