@@ -37,8 +37,8 @@ library(wordcloud)
 ### Create a Data Frame for DT Ttweets
 getwd()
 # setwd("C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS")
-# setwd("C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS")
-setwd("C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS")
+ setwd("C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS")
+#setwd("C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS")
 
 ## read Donald Trump tweets downloaded from trumptwitterarchive.com 
 DTTweets_CSV <- read.csv("dt_tweets.csv",header = TRUE, stringsAsFactors=FALSE)
@@ -80,8 +80,8 @@ DTTweets_CSV$minuteID == DTTweets_CSV$timeID
 
 ## Export CSV
 #write.csv(DTTweets_CSV,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
-#write.csv(DTTweets_CSV,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
-write.csv(DTTweets_CSV,'C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
+write.csv(DTTweets_CSV,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
+#write.csv(DTTweets_CSV,'C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
 
 ## Create a data frame with just Core data - identifiers and tweet text
 DTTweets_Core <- data.frame(minute_id = DTTweets_CSV$minuteID,
@@ -120,7 +120,7 @@ DTTweets_Core <- DTTweets_Core[grepl(paste(keywords, collapse="|"), DTTweets_Cor
 head(DTTweets_Core)
 nrow(DTTweets_Core)
 
-write.csv(DTTweets_Core,'C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS/DTTweets_Core.csv', row.names = FALSE)
+#write.csv(DTTweets_Core,'C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS/DTTweets_Core.csv', row.names = FALSE)
 
 
 ## EXPLORE COMMON WORDS
@@ -324,6 +324,7 @@ DTTweets_BingByTweet <-  DTTweets_BingBySentiment %>%
 DTTweets_BingByTweet
 DTTweets_BingByTweet[1:20,]
 nrow(DTTweets_BingByTweet)
+#403
 
 # Confirm all Time_ID values are unique
 DTTweets_Bing <-  DTTweets_BingByTweet %>%
@@ -333,6 +334,7 @@ DTTweets_Bing <-  DTTweets_BingByTweet %>%
 DTTweets_Bing <- as.data.frame(DTTweets_Bing)
 DTTweets_Bing
 nrow(DTTweets_Bing)
+#403
 
 # Analyze the data set
 summary(DTTweets_Bing)
@@ -351,6 +353,7 @@ mode(DTTweets_Bing$normalized_sentiment)
 hist(DTTweets_Bing$normalized_sentiment)
 summary(DTTweets_Bing$normalized_sentiment)
 nrow(DTTweets_Bing)
+#403
 
 # Add Category Labels for the overall sentiment based on Net Sentiment score
 colnames(DTTweets_Bing)
@@ -369,8 +372,8 @@ mode(DTTweets_Bing$sentiment_factor)
 # THIS SHOULD FEED INTO STOCK ANALYSIS
 
 # Export the data set with Net Sentiment Score
-write.csv(DTTweets_Bing,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Bing.csv', row.names = FALSE)
-# write.csv(DTTweets_Bing,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_Bing.csv', row.names = FALSE)
+#write.csv(DTTweets_Bing,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Bing.csv', row.names = FALSE)
+ write.csv(DTTweets_Bing,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_Bing.csv', row.names = FALSE)
 
 # rm(DTTweets_BingIndexPositive)
 # DTTweets_BingIndexPositive <- rownames(DTTweets_Bing$net_sentiment[DTTweets_Bing$net_sentiment > 0])
@@ -384,15 +387,19 @@ DTTweets_BingPositive <- DTTweets_Bing %>%
 DTTweets_BingNegative <- DTTweets_Bing %>%
   filter(net_sentiment < 0) # only select rows with net NEGATIVE sentiment score
 nrow(DTTweets_BingPositive)
+#224
 nrow(DTTweets_BingNegative)
+#126
 DTTweets_BingNegative5 <- DTTweets_Bing %>%
   filter(net_sentiment <= -5) # only select rows with net NEGATIVE sentiment score of 5 or lower
-
+nrow(DTTweets_BingNegative5)
 
 # Review the Text of Positive Tweets 
 
 nrow(DTTweets_Core)
+#516
 nrow(DTTweets_BingPositive)
+#224
 DTTweets_BingPositive$time_id
 mode(DTTweets_BingPositive$time_id)
 DTTweets_Core$time_id
@@ -519,6 +526,7 @@ mode(DTTweets_Afinn$normalized_sentiment)
 hist(DTTweets_Afinn$normalized_sentiment)
 summary(DTTweets_Afinn$normalized_sentiment)
 nrow(DTTweets_Afinn)
+#443
 
 # Add Category Labels for the overall sentiment based on Net Sentiment score
 colnames(DTTweets_Afinn)
@@ -548,15 +556,18 @@ DTTweets_AfinnPositive <- DTTweets_Afinn %>%
 DTTweets_AfinnNegative <- DTTweets_Afinn %>%
   filter(net_sentiment < 0) # only select rows with net NEGATIVE sentiment score
 nrow(DTTweets_AfinnPositive)
+#209
 nrow(DTTweets_AfinnNegative)
+#206
 DTTweets_AfinnNegative5 <- DTTweets_Afinn %>%
   filter(net_sentiment <= -5) # only select rows with net NEGATIVE sentiment score of 5 or lower
-
-
+nrow(DTTweets_AfinnNegative5)
+#36
 # Review the Text of Positive Tweets 
 
 nrow(DTTweets_Core)
 nrow(DTTweets_AfinnPositive)
+#209
 DTTweets_AfinnPositive$time_id
 mode(DTTweets_AfinnPositive$time_id)
 DTTweets_Core$time_id
@@ -593,8 +604,9 @@ DTTweets_Core$Afinn_Sentiment_Factor
 
 
 ## Export CSV
-write.csv(DTTweets_Core,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Core.csv', row.names = FALSE)
-
+#write.csv(DTTweets_Core,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Core.csv', row.names = FALSE)
+write.csv(DTTweets_Core,'C:/Users/binta.d.patel/Documents/GitHub/FE800HBS/FE800HBS/DTTweets_ID.csv', row.names = FALSE)
+#write.csv(DTTweets_Core,'C:/Users/richa/OneDrive/Documents/Education/Stevens Institute/FE 800/Project/FE800HBS/DTTweets_Core.csv', row.names = FALSE)
 
 
 ## *********************************
