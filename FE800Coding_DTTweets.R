@@ -26,13 +26,17 @@ install.packages("igraph")
 library(igraph)
 install.packages("ggraph")
 library(ggraph)
-# last package
+# Misc package
 install.packages("dplyr")
 library(dplyr)
+install.packages("plyr")
+library(plyr)
 # tidytext::unnest_tokens()
 install.packages("wordcloud")
 library(wordcloud)
 
+install.packages("ggpubr")
+library(ggpubr)
 
 ### Create a Data Frame for DT Ttweets
 getwd()
@@ -338,11 +342,46 @@ nrow(DTTweets_Bing)
 
 # Analyze the data set
 summary(DTTweets_Bing)
+
+# Plot the Histogram
 # hist(DTTweets_Bing$net_sentiment)
 histinfoBing <- hist(DTTweets_Bing$net_sentiment,
                       main="Histogram of DT Tweets with Bing Sentiment Value", 
                       xlab="Bing Sentiment Score",  breaks = 15)
 histinfoBing
+
+# Plot Probability Density Curve
+x = DTTweets_Bing$net_sentiment
+y=dnorm(x,mean(DTTweets_Bing$net_sentiment), sd(DTTweets_Bing$net_sentiment))
+plot(x,y, main="Probability Density of DT Tweets Sentiment (Bing)",
+     xlab="Bing Sentiment Score",
+     ylab="Probability Density")
+curve(dnorm(x, mean(DTTweets_Bing$net_sentiment), sd(DTTweets_Bing$net_sentiment)), add=TRUE, col="darkblue", lwd=2)
+
+length(DTTweets_Bing$net_sentiment)
+length(x)
+length(y)
+
+
+# Kernel Density Plot
+dBing <- density(DTTweets_Bing$net_sentiment) # returns the density data 
+plot(dBing, main="Kernel Density of DT Tweets Sentiment (Bing)",
+     xlab="Bing Sentiment Score",
+     ylab="Kernel Density") # plots the results
+
+mean(DTTweets_Bing$net_sentiment)
+sd(DTTweets_Bing$net_sentiment)
+
+# Basic frequency polygon
+theme_set(theme_pubclean())
+aBing <- ggplot(DTTweets_Bing, aes(x = net_sentiment))
+aBing + geom_freqpoly(bins = 15) 
+# Basic area plots, which can be filled by color
+aBing + geom_area( stat = "bin", bins = 15,
+               color = "black", fill = "#00AFBB")
+
+
+
 
 # The net sentiment contains 0 and should be normalized to a postiive scale by adding 7 (lowest value is -6)
 mode(DTTweets_Bing$net_sentiment)
@@ -370,6 +409,11 @@ mode(DTTweets_Bing$sentiment_factor)
 
 # THIS IS THE DATA SET WITH NET SENTIMENT SCORE - USING BING - FOR EACH TWEET (TIME_ID)
 # THIS SHOULD FEED INTO STOCK ANALYSIS
+
+# Analyze the Categorical Bing data
+# Plot Histogram for Bing Categorical Sentiment
+hist(DTTweets_Bing$sentiment)
+count(DTTweets_Bing$sentiment)
 
 # Export the data set with Net Sentiment Score
 #write.csv(DTTweets_Bing,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Bing.csv', row.names = FALSE)
@@ -501,16 +545,47 @@ DTTweets_Afinn
 DTTweets_Afinn[1:20,]
 nrow(DTTweets_Afinn)
 
-# Analyze the Histogram - Spread of net sentiment score 
-summary(DTTweets_Afinn)
+# Plot the Histogram
+# hist(DTTweets_Afinn$net_sentiment)
 histinfoAfinn <- hist(DTTweets_Afinn$net_sentiment,
-                 main="Histogram of DT Tweets with Afinn Sentiment Score", 
-                 xlab="Afinn Sentiment Value",  breaks = 30)
-# curve(dnorm(x, mean=mean(DTTweets_Afinn$net_sentiment), sd=sd(DTTweets_Afinn$net_sentiment)), add=TRUE, col="red", lwd=2)                  
+                     main="Histogram of DT Tweets with Afinn Sentiment Value", 
+                     xlab="Afinn Sentiment Score",  breaks = 15)
 histinfoAfinn
 
+# Plot Probability Density Curve
+x = DTTweets_Afinn$net_sentiment
+y=dnorm(x,mean(DTTweets_Afinn$net_sentiment), sd(DTTweets_Afinn$net_sentiment))
+plot(x,y, main="Probability Density of DT Tweets Sentiment (Afinn)",
+     xlab="Afinn Sentiment Score",
+     ylab="Probability Density")
+curve(dnorm(x, mean(DTTweets_Afinn$net_sentiment), sd(DTTweets_Afinn$net_sentiment)), add=TRUE, col="red", lwd=2)
+
+length(DTTweets_Afinn$net_sentiment)
+length(x)
+length(y)
 
 
+# Kernel Density Plot
+dAfinn <- density(DTTweets_Afinn$net_sentiment) # returns the density data 
+plot(dAfinn, main="Kernel Density of DT Tweets Sentiment (Afinn)",
+     xlab="Afinn Sentiment Score",
+     ylab="Kernel Density") # plots the results
+
+mean(DTTweets_Afinn$net_sentiment)
+sd(DTTweets_Afinn$net_sentiment)
+
+# Basic frequency polygon
+theme_set(theme_pubclean())
+aAfinn <- ggplot(DTTweets_Afinn, aes(x = net_sentiment))
+aAfinn + geom_freqpoly(bins = 15) 
+# Basic area plots, which can be filled by color
+aAfinn + geom_area( stat = "bin", bins = 15,
+                   color = "black", fill = "#FFAFBB")
+
+
+
+
+# Afinn Count of Sentiment values
 DTTweets_AfinnCount <- DTTweets_Afinn %>% 
   count(net_sentiment)
 DTTweets_AfinnCount <- as.data.frame(DTTweets_AfinnCount)
@@ -544,6 +619,10 @@ mode(DTTweets_Afinn$sentiment_factor)
 
 # THIS IS THE DATA SET WITH NET SENTIMENT SCORE - USING AFINN - FOR EACH TWEET (TIME_ID)
 # THIS SHOULD FEED INTO STOCK ANALYSIS
+
+# Analyze the Categorical Afinn data - count
+count(DTTweets_Afinn$sentiment)
+
 
 # Export the data set with Net Sentiment Score
 # write.csv(DTTweets_Afinn,'C:/Users/harshil.b.shah/Documents/GitHub/FE800HBS/DTTweets_Afinn.csv', row.names = FALSE)
